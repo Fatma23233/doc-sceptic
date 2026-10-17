@@ -1,0 +1,1001 @@
+from __future__ import annotations
+
+from datetime import datetime, timezone
+from html import escape
+
+import streamlit as st
+
+from doc_sceptic.agent import DataArchitectureAgent
+from doc_sceptic.config import Settings
+from doc_sceptic.supabase_store import HistoryStore, anon_client
+
+
+st.set_page_config(
+    page_title="Doc-Sceptic | Microsoft Fabric Advisor",
+    page_icon="✦",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
+
+# =============================================================================
+# STYLE FIDELE A LA MAQUETTE
+# =============================================================================
+
+st.markdown(
+    """
+    <style>
+    :root {
+        --navy: #0b1f3d;
+        --text: #132746;
+        --muted: #607291;
+        --blue: #1268db;
+        --blue-2: #1683ff;
+        --blue-soft: #edf5ff;
+        --line: #dfe7f1;
+        --sidebar: #f8fbff;
+        --green: #0aa968;
+        --green-soft: #eaf8f1;
+    }
+
+    html, body, [class*="css"] {
+        font-family: "Segoe UI", Inter, Arial, sans-serif;
+    }
+
+    .stApp {
+        color: var(--text);
+        background:
+            radial-gradient(circle at 69% 0%, rgba(221, 235, 255, .58), transparent 29%),
+            radial-gradient(circle at 89% 55%, rgba(232, 247, 251, .45), transparent 31%),
+            #ffffff;
+    }
+
+    #MainMenu, footer, header {
+        visibility: hidden;
+    }
+
+    .block-container {
+        max-width: 1180px;
+        padding: 1.35rem 2rem 6.8rem;
+    }
+
+    /* ---------------------------------------------------------------------
+       SIDEBAR
+       --------------------------------------------------------------------- */
+
+    [data-testid="stSidebar"] {
+        width: 334px !important;
+        min-width: 334px !important;
+        background: rgba(248, 251, 255, .97) !important;
+        border-right: 1px solid #e3eaf3;
+    }
+
+    [data-testid="stSidebar"] > div:first-child {
+        width: 334px !important;
+    }
+
+    [data-testid="stSidebar"] .block-container {
+        padding: 1.35rem 1.08rem 1rem !important;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: .78rem;
+        margin: .05rem .28rem 1.25rem;
+    }
+
+    .brand-star {
+        color: #1468d8;
+        font-size: 2rem;
+        line-height: 1;
+        transform: rotate(-8deg);
+    }
+
+    .brand-title {
+        color: var(--navy);
+        font-size: 1.30rem;
+        font-weight: 760;
+        letter-spacing: -.025em;
+        line-height: 1.05;
+    }
+
+    .brand-subtitle {
+        color: #516481;
+        font-size: .76rem;
+        margin-top: .28rem;
+    }
+
+    .sidebar-section {
+        color: #526580;
+        font-size: .82rem;
+        font-weight: 520;
+        margin: 1rem .35rem .55rem;
+    }
+
+    /* New conversation */
+    .st-key-new_chat button {
+        min-height: 44px !important;
+        border-radius: 12px !important;
+        border: 1px solid #d9e3ef !important;
+        background: rgba(255,255,255,.96) !important;
+        box-shadow: 0 5px 16px rgba(30, 65, 110, .06) !important;
+        color: var(--navy) !important;
+        font-size: .84rem !important;
+        font-weight: 700 !important;
+        justify-content: flex-start !important;
+        padding-left: .48rem !important;
+    }
+
+    .st-key-new_chat button::before {
+        content: "+";
+        display: grid;
+        place-items: center;
+        width: 25px;
+        height: 25px;
+        margin-right: .46rem;
+        border-radius: 50%;
+        color: white;
+        background: linear-gradient(145deg, var(--blue-2), var(--blue));
+        font-size: 1rem;
+        font-weight: 400;
+    }
+
+    /* Home */
+    .st-key-home_nav button {
+        min-height: 41px !important;
+        margin-top: .55rem !important;
+        border: 0 !important;
+        border-radius: 9px !important;
+        background: linear-gradient(90deg, #edf5ff, #edf8fb) !important;
+        color: #0e60c9 !important;
+        font-size: .82rem !important;
+        font-weight: 650 !important;
+        justify-content: flex-start !important;
+        padding-left: .55rem !important;
+        box-shadow: none !important;
+    }
+
+    .st-key-home_nav button::before {
+        content: "⌂";
+        margin-right: .55rem;
+        font-size: 1rem;
+        font-weight: 800;
+    }
+
+    /* Conversation rows */
+    [data-testid="stSidebar"] [class*="st-key-conversation_"] {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    [data-testid="stSidebar"] [class*="st-key-conversation_"] button {
+        width: 100% !important;
+        min-height: 23px !important;
+        margin: 0 !important;
+        padding: .10rem .22rem !important;
+        border: 0 !important;
+        border-radius: 7px !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        color: var(--navy) !important;
+        font-size: .76rem !important;
+        font-weight: 530 !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+    }
+
+    [data-testid="stSidebar"] [class*="st-key-conversation_"] button p {
+        width: 100% !important;
+        margin: 0 !important;
+        text-align: left !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    [data-testid="stSidebar"] [class*="st-key-conversation_"] button:hover {
+        color: #0e60c9 !important;
+        background: #eef5ff !important;
+    }
+
+    .conversation-time {
+        margin: -.02rem 0 .38rem .35rem;
+        color: #71819a;
+        font-size: .65rem;
+        line-height: 1;
+        text-align: left;
+    }
+
+    /* Bottom sidebar */
+    .sidebar-bottom-spacer {
+        height: 7rem;
+    }
+
+    [data-testid="stSidebar"] hr {
+        margin: .7rem .24rem .58rem !important;
+        border-color: #e3eaf3 !important;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stLinkButton"] a,
+    .st-key-about_doc_sceptic button,
+    .st-key-logout button {
+        width: 100% !important;
+        min-height: 29px !important;
+        padding: .08rem .26rem !important;
+        border: 0 !important;
+        border-radius: 7px !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        color: #243b5d !important;
+        font-size: .74rem !important;
+        font-weight: 500 !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stLinkButton"] a:hover,
+    .st-key-about_doc_sceptic button:hover,
+    .st-key-logout button:hover {
+        color: #0e60c9 !important;
+        background: #eef5ff !important;
+    }
+
+    .user-row {
+        position: relative;
+        min-height: 34px;
+        padding: .42rem 1.2rem .35rem 2.35rem;
+        color: #183253;
+        font-size: .70rem;
+        font-weight: 520;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .user-row::before {
+        content: "F";
+        position: absolute;
+        left: .2rem;
+        top: .24rem;
+        display: grid;
+        place-items: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        color: white;
+        background: #164fa3;
+        font-size: .68rem;
+        font-weight: 700;
+    }
+
+    .user-row::after {
+        content: "⌄";
+        position: absolute;
+        right: .28rem;
+        top: .42rem;
+        color: #6380a3;
+        font-size: .8rem;
+    }
+
+    /* ---------------------------------------------------------------------
+       MAIN HEADER
+       --------------------------------------------------------------------- */
+
+    .hero {
+        text-align: center;
+        padding: .25rem 1rem 1.2rem;
+    }
+
+    .hero h1 {
+        margin: 0;
+        color: #071c3b;
+        font-size: 3.55rem;
+        line-height: 1.05;
+        letter-spacing: -.045em;
+    }
+
+    .hero-tagline {
+        margin-top: .52rem;
+        color: #526684;
+        font-size: 1.02rem;
+    }
+
+    .hero-description {
+        max-width: 760px;
+        margin: 1.38rem auto 0;
+        color: #526887;
+        font-size: .98rem;
+        line-height: 1.55;
+    }
+
+    .top-icons {
+        position: fixed;
+        top: 1.6rem;
+        right: 2rem;
+        z-index: 100;
+        color: #173a67;
+        font-size: 1.15rem;
+        letter-spacing: .55rem;
+    }
+
+    /* Suggestions */
+    .suggestions [data-testid="stButton"] button {
+        min-height: 44px !important;
+        border: 1px solid #dce5f0 !important;
+        border-radius: 13px !important;
+        background: rgba(255,255,255,.86) !important;
+        color: #10264a !important;
+        font-size: .82rem !important;
+        box-shadow: none !important;
+    }
+
+    .suggestions [data-testid="stButton"] button:hover {
+        color: #0e60c9 !important;
+        border-color: #bdd7fb !important;
+        background: #f5f9ff !important;
+    }
+
+    /* ---------------------------------------------------------------------
+       CHAT
+       --------------------------------------------------------------------- */
+
+    [data-testid="stChatMessageAvatarUser"],
+    [data-testid="stChatMessageAvatarAssistant"],
+    [data-testid="stChatMessageAvatarCustom"] {
+        display: none !important;
+    }
+
+    [data-testid="stChatMessage"] {
+        border: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: .3rem 0 !important;
+        margin: 0 0 .7rem !important;
+    }
+
+    [data-testid="stChatMessageContent"] {
+        width: 100% !important;
+        padding-left: 0 !important;
+    }
+
+    [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+        margin-left: 42% !important;
+    }
+
+    [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"])
+    [data-testid="stChatMessageContent"] {
+        padding: .95rem 1.1rem !important;
+        border: 1px solid #d2e3fb !important;
+        border-radius: 14px !important;
+        color: #102747 !important;
+        background: linear-gradient(105deg, #ebf4ff, #e5efff) !important;
+    }
+
+    [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"])
+    [data-testid="stChatMessageContent"] {
+        padding: 1.05rem 1.18rem !important;
+        border: 1px solid #dce4ee !important;
+        border-radius: 15px !important;
+        color: #10213f !important;
+        background: rgba(255,255,255,.93) !important;
+        box-shadow: 0 8px 26px rgba(26, 59, 101, .05) !important;
+    }
+
+    .assistant-name {
+        display: inline-block;
+        margin-bottom: .38rem;
+        color: #0866df;
+        font-size: .91rem;
+        font-weight: 720;
+    }
+
+    .decision-card {
+        display: inline-flex !important;
+        width: auto !important;
+        margin: .1rem 0 .7rem !important;
+        padding: .34rem .68rem !important;
+        border-radius: 999px !important;
+        box-shadow: none !important;
+    }
+
+    .decision-card.recommend {
+        color: #096546 !important;
+        background: var(--green-soft) !important;
+        border: 1px solid #c7ead7 !important;
+    }
+
+    .decision-card.clarify {
+        color: #9a5a02 !important;
+        background: #fff7e6 !important;
+        border: 1px solid #f0dca8 !important;
+    }
+
+    .decision-card.abstain {
+        color: #9d332b !important;
+        background: #fff1ef !important;
+        border: 1px solid #efcac5 !important;
+    }
+
+    .decision-card.chat,
+    .decision-title {
+        display: none !important;
+    }
+
+    .decision-kicker {
+        margin: 0 !important;
+        font-size: .70rem !important;
+        font-weight: 650 !important;
+        letter-spacing: 0 !important;
+        text-transform: none !important;
+    }
+
+    /* Sources */
+    .sources-title {
+        margin: 1rem 0 .45rem;
+        padding-top: .9rem;
+        border-top: 1px solid #e5eaf1;
+        color: #0b2243;
+        font-size: 1.08rem;
+        font-weight: 760;
+    }
+
+    .source-card {
+        display: block;
+        min-height: 64px;
+        padding: .55rem .68rem;
+        border: 1px solid #dbe4ef;
+        border-radius: 12px;
+        color: #13294c !important;
+        background: rgba(255,255,255,.96);
+        text-decoration: none !important;
+        box-shadow: 0 4px 14px rgba(30, 63, 105, .04);
+    }
+
+    .source-card:hover {
+        border-color: #b9d4fb;
+        background: #f8fbff;
+    }
+
+    .source-index {
+        color: #176bdd;
+        font-size: .68rem;
+        font-weight: 720;
+    }
+
+    .source-name {
+        margin-top: .15rem;
+        color: #102746;
+        font-size: .72rem;
+        font-weight: 650;
+        line-height: 1.2;
+    }
+
+    .source-section {
+        margin-top: .12rem;
+        color: #60738f;
+        font-size: .64rem;
+        line-height: 1.18;
+    }
+
+    /* Chat input */
+    [data-testid="stChatInput"] {
+        border: 1px solid #dce4ee !important;
+        border-radius: 16px !important;
+        background: white !important;
+        box-shadow: 0 10px 28px rgba(30, 62, 103, .08) !important;
+    }
+
+    /* Documentation and About aligned left */
+    [data-testid="stSidebar"] [data-testid="stLinkButton"] a,
+    .st-key-about_doc_sceptic button {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        width: 100% !important;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stLinkButton"] a p,
+    .st-key-about_doc_sceptic button p {
+        width: 100% !important;
+        margin: 0 !important;
+        text-align: left !important;
+    }
+
+    /* Conversation titles aligned left without icons */
+    [data-testid="stSidebar"] [class*="st-key-conversation_"] button {
+        padding-left: .35rem !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+    }
+
+    [data-testid="stSidebar"] [class*="st-key-conversation_"] button p {
+        text-align: left !important;
+    }
+
+    /* Sidebar lower navigation: force left alignment */
+    [data-testid="stSidebar"] [data-testid="stLinkButton"],
+    [data-testid="stSidebar"] .st-key-about_doc_sceptic {
+        width: 100% !important;
+        text-align: left !important;
+    }
+    [data-testid="stSidebar"] [data-testid="stLinkButton"] a,
+    [data-testid="stSidebar"] .st-key-about_doc_sceptic button {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+    [data-testid="stSidebar"] [data-testid="stLinkButton"] a p,
+    [data-testid="stSidebar"] .st-key-about_doc_sceptic button p {
+        width: 100% !important;
+        flex-grow: 1 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        text-align: left !important;
+    }
+    /* conversation management */
+    [data-testid="stSidebar"] [class*="st-key-manage_"] button {
+        min-height: 22px !important; height: 22px !important; width: 22px !important;
+        padding: 0 !important; border:0 !important; background:transparent !important;
+        box-shadow:none !important; color:#7184a1 !important;
+    }
+    [data-testid="stSidebar"] [class*="st-key-download_"] button,
+    [data-testid="stSidebar"] [class*="st-key-delete_"] button {
+        min-height: 29px !important; padding:.15rem .25rem !important; font-size:.66rem !important;
+        border-radius:7px !important;
+    }
+    [data-testid="stSidebar"] [class*="st-key-delete_"] button {
+        color:#a4362f !important; border-color:#efcfcc !important; background:#fff7f6 !important;
+    }
+    @media (max-width: 900px) {
+        [data-testid="stSidebar"] { width: 280px !important; min-width: 280px !important; }
+        [data-testid="stSidebar"] > div:first-child { width: 280px !important; }
+        .block-container { padding-left: 1rem; padding-right: 1rem; }
+        .hero h1 { font-size: 2.7rem; }
+        [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) { margin-left: 12% !important; }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+
+# =============================================================================
+# HELPERS
+# =============================================================================
+
+ACTION_META = {
+    "recommend": "✓  Recommandation documentée",
+    "clarify": "?  Précision nécessaire",
+    "abstain": "○  Preuves insuffisantes",
+    "chat": "",
+}
+
+SUGGESTIONS = {
+    "Warehouse ou Lakehouse ?": (
+        "Notre équipe travaille en T-SQL avec des données structurées, des "
+        "transactions multi-tables et Power BI. Faut-il utiliser un Warehouse "
+        "ou un Lakehouse ?"
+    ),
+    "Architecture medallion": (
+        "Propose une architecture Bronze, Silver et Gold dans Microsoft Fabric "
+        "pour des fichiers et des données SQL, avec une consommation Power BI."
+    ),
+    "Spark et données variées": (
+        "Nous traitons avec PySpark des données structurées et non structurées "
+        "dans OneLake. Quel stockage Fabric faut-il privilégier ?"
+    ),
+}
+
+
+def format_time(value: str | None) -> str:
+    if not value:
+        return ""
+    try:
+        dt = datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone()
+        now = datetime.now().astimezone()
+        delta = (now.date() - dt.date()).days
+        if delta == 0:
+            prefix = "Aujourd’hui"
+        elif delta == 1:
+            prefix = "Hier"
+        else:
+            prefix = dt.strftime("%d/%m/%Y")
+        return f"{prefix}, {dt.strftime('%H:%M')}"
+    except Exception:
+        return ""
+
+
+def conversation_export_text(title: str, messages: list[dict]) -> str:
+    lines = [f"# {title}", "", "Export Doc-Sceptic", ""]
+    for message in messages:
+        role = "Vous" if message.get("role") == "user" else "Doc-Sceptic"
+        lines.append(f"## {role}")
+        lines.append(str(message.get("content") or ""))
+        sources = message.get("sources") or []
+        if sources:
+            lines.append("")
+            lines.append("Sources :")
+            for index, source in enumerate(sources, 1):
+                lines.append(f"- [S{index}] {source.get('title') or 'Source'} - {source.get('url') or ''}")
+        lines.append("")
+    return "\n".join(lines)
+
+
+def render_brand() -> None:
+    st.markdown(
+        """
+        <div class="brand">
+            <div class="brand-star">✦</div>
+            <div>
+                <div class="brand-title">Doc-Sceptic</div>
+                <div class="brand-subtitle">Microsoft Fabric Advisor</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_hero() -> None:
+    st.markdown(
+        """
+        <div class="top-icons">☼ ◔</div>
+        <div class="hero">
+            <h1>Doc-Sceptic</h1>
+            <div class="hero-tagline">Concevez, comparez, décidez. Avec des preuves.</div>
+            <div class="hero-description">
+                Je suis un conseiller d’architecture Microsoft Fabric. Je m’appuie sur la documentation officielle<br>
+                pour analyser vos besoins, proposer des recommandations et savoir aussi demander une précision<br>
+                ou m’abstenir quand les preuves sont insuffisantes.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_decision(action: str) -> None:
+    label = ACTION_META.get(action, "")
+    if not label:
+        return
+    st.markdown(
+        f"""
+        <div class="decision-card {escape(action)}">
+            <div class="decision-kicker">{escape(label)}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_sources(sources: list[dict], message_id: str) -> None:
+    if not sources:
+        return
+
+    st.markdown('<div class="sources-title">Sources</div>', unsafe_allow_html=True)
+    visible = sources[:3]
+    columns = st.columns(len(visible), gap="small")
+
+    for index, (column, source) in enumerate(zip(columns, visible), 1):
+        title = escape(str(source.get("title") or "Documentation Fabric"))
+        section = escape(str(source.get("section") or "Documentation"))
+        url = escape(
+            str(source.get("url") or "https://learn.microsoft.com/fabric/"),
+            quote=True,
+        )
+        with column:
+            st.markdown(
+                f"""
+                <a class="source-card" href="{url}" target="_blank" rel="noopener noreferrer">
+                    <div class="source-index">▣ &nbsp; [S{index}]</div>
+                    <div class="source-name">{title}</div>
+                    <div class="source-section">{section}</div>
+                </a>
+                """,
+                unsafe_allow_html=True,
+            )
+
+    if len(sources) > 3:
+        with st.expander(f"Voir les {len(sources)} sources"):
+            for index, source in enumerate(sources, 1):
+                st.markdown(f"**[S{index}] {source.get('title') or 'Source'}**")
+                st.caption(source.get("section") or "")
+                st.markdown(source.get("text") or "")
+                if source.get("url"):
+                    st.link_button(
+                        "Ouvrir la source",
+                        source["url"],
+                        key=f"source_{message_id}_{index}",
+                    )
+
+
+def render_user_message(message: dict) -> None:
+    with st.chat_message("user"):
+        st.markdown(message.get("content") or "")
+
+
+def render_assistant_message(message: dict) -> None:
+    action = message.get("action") or "chat"
+    sources = message.get("sources") or []
+
+    with st.chat_message("assistant"):
+        st.markdown('<div class="assistant-name">Doc-Sceptic</div>', unsafe_allow_html=True)
+        render_decision(action)
+        st.markdown(message.get("content") or "")
+        render_sources(sources, str(message.get("id") or "history"))
+
+
+# =============================================================================
+# SESSION + AUTHENTIFICATION
+# =============================================================================
+
+settings = Settings()
+
+if "sb" not in st.session_state:
+    st.session_state.sb = anon_client(settings)
+if "session" not in st.session_state:
+    st.session_state.session = None
+if "conversation_id" not in st.session_state:
+    st.session_state.conversation_id = None
+if "pending_prompt" not in st.session_state:
+    st.session_state.pending_prompt = None
+if "show_home" not in st.session_state:
+    st.session_state.show_home = True
+if "show_about" not in st.session_state:
+    st.session_state.show_about = False
+if "manage_conversation_id" not in st.session_state:
+    st.session_state.manage_conversation_id = None
+
+
+if st.session_state.session is None:
+    left, center, right = st.columns([1, 1.05, 1])
+    with center:
+        st.markdown("<br><br>", unsafe_allow_html=True)
+        render_brand()
+        st.header("Connexion")
+        st.caption("Retrouve tes conversations et tes décisions d’architecture.")
+
+        login_tab, signup_tab = st.tabs(["Se connecter", "Créer un compte"])
+
+        with login_tab:
+            email = st.text_input("Email", key="login_email")
+            password = st.text_input("Mot de passe", type="password", key="login_password")
+            if st.button("Se connecter", type="primary", use_container_width=True):
+                try:
+                    response = st.session_state.sb.auth.sign_in_with_password(
+                        {"email": email, "password": password}
+                    )
+                    st.session_state.session = response.session
+                    st.rerun()
+                except Exception as error:
+                    st.error(str(error))
+
+        with signup_tab:
+            signup_email = st.text_input("Email", key="signup_email")
+            signup_password = st.text_input(
+                "Mot de passe", type="password", key="signup_password"
+            )
+            if st.button("Créer le compte", use_container_width=True):
+                try:
+                    st.session_state.sb.auth.sign_up(
+                        {"email": signup_email, "password": signup_password}
+                    )
+                    st.success(
+                        "Compte créé. Confirme l’adresse si la validation email est activée."
+                    )
+                except Exception as error:
+                    st.error(str(error))
+
+    st.stop()
+
+
+user = st.session_state.session.user
+history = HistoryStore(st.session_state.sb)
+
+
+# =============================================================================
+# SIDEBAR
+# =============================================================================
+
+with st.sidebar:
+    render_brand()
+
+    if st.button("Nouvelle conversation", key="new_chat", use_container_width=True):
+        st.session_state.conversation_id = None
+        st.session_state.pending_prompt = None
+        st.session_state.show_home = True
+        st.rerun()
+
+    if st.button("Accueil", key="home_nav", use_container_width=True):
+        st.session_state.conversation_id = None
+        st.session_state.pending_prompt = None
+        st.session_state.show_home = True
+        st.rerun()
+
+    st.markdown(
+        '<div class="sidebar-section">Conversations récentes</div>',
+        unsafe_allow_html=True,
+    )
+
+    conversations = history.list_conversations()
+
+    if not conversations:
+        st.caption("Aucune conversation enregistrée.")
+
+    for conversation in conversations:
+        conversation_id_item = conversation["id"]
+        title = str(conversation.get("title") or "Conversation")[:35]
+        when = format_time(conversation.get("updated_at"))
+
+        col_title, col_action = st.columns([8.5, 1.5], gap="small")
+        with col_title:
+            if st.button(
+                title,
+                key=f"conversation_{conversation_id_item}",
+                use_container_width=True,
+            ):
+                st.session_state.conversation_id = conversation_id_item
+                st.session_state.show_home = False
+                st.rerun()
+        with col_action:
+            if st.button("⋯", key=f"manage_{conversation_id_item}", help="Gérer la conversation"):
+                st.session_state.manage_conversation_id = (
+                    None if st.session_state.manage_conversation_id == conversation_id_item
+                    else conversation_id_item
+                )
+                st.rerun()
+
+        if when:
+            st.markdown(
+                f'<div class="conversation-time">{escape(when)}</div>',
+                unsafe_allow_html=True,
+            )
+
+        if st.session_state.manage_conversation_id == conversation_id_item:
+            manage_messages = history.messages(conversation_id_item)
+            export_text = conversation_export_text(title, manage_messages)
+            action_a, action_b = st.columns(2, gap="small")
+            with action_a:
+                st.download_button(
+                    "Télécharger",
+                    data=export_text,
+                    file_name=f"doc-sceptic-{conversation_id_item}.md",
+                    mime="text/markdown",
+                    key=f"download_{conversation_id_item}",
+                    use_container_width=True,
+                )
+            with action_b:
+                if st.button(
+                    "Supprimer",
+                    key=f"delete_{conversation_id_item}",
+                    use_container_width=True,
+                    type="secondary",
+                ):
+                    history.delete_conversation(conversation_id_item)
+                    if st.session_state.conversation_id == conversation_id_item:
+                        st.session_state.conversation_id = None
+                        st.session_state.show_home = True
+                    st.session_state.manage_conversation_id = None
+                    st.rerun()
+
+    st.markdown('<div class="sidebar-bottom-spacer"></div>', unsafe_allow_html=True)
+    st.markdown("<hr>", unsafe_allow_html=True)
+
+    st.link_button(
+        "▣  Documentation",
+        "https://learn.microsoft.com/fabric/",
+        use_container_width=True,
+    )
+
+    if st.button("ⓘ  À propos", key="about_doc_sceptic", use_container_width=True):
+        st.session_state.show_about = not st.session_state.show_about
+
+    if st.session_state.show_about:
+        st.info(
+            "Doc-Sceptic analyse les contraintes d’un projet Microsoft Fabric, "
+            "recherche des preuves dans la documentation indexée, puis recommande, "
+            "demande une précision ou s’abstient lorsque les preuves sont insuffisantes."
+        )
+
+    st.markdown("<hr>", unsafe_allow_html=True)
+    st.markdown(
+        f'<div class="user-row">{escape(str(user.email or "Utilisateur"))}</div>',
+        unsafe_allow_html=True,
+    )
+
+    if st.button("↪  Déconnexion", key="logout", use_container_width=True):
+        st.session_state.sb.auth.sign_out()
+        st.session_state.session = None
+        st.session_state.conversation_id = None
+        st.rerun()
+
+
+# =============================================================================
+# CONTENU PRINCIPAL
+# =============================================================================
+
+render_hero()
+
+st.markdown('<div class="suggestions">', unsafe_allow_html=True)
+suggestion_columns = st.columns(3, gap="medium")
+for column, (label, suggestion) in zip(suggestion_columns, SUGGESTIONS.items()):
+    with column:
+        if st.button(label, key=f"suggestion_{label}", use_container_width=True):
+            st.session_state.pending_prompt = suggestion
+            st.rerun()
+st.markdown("</div>", unsafe_allow_html=True)
+
+conversation_id = st.session_state.conversation_id
+
+if conversation_id and not st.session_state.show_home:
+    for message in history.messages(conversation_id):
+        if message.get("role") == "user":
+            render_user_message(message)
+        else:
+            render_assistant_message(message)
+
+
+prompt = st.chat_input("Posez une autre question...")
+
+if st.session_state.pending_prompt:
+    prompt = st.session_state.pending_prompt
+    st.session_state.pending_prompt = None
+
+
+if prompt:
+    if not conversation_id:
+        conversation = history.create_conversation(prompt[:80], user.id)
+        conversation_id = conversation["id"]
+        st.session_state.conversation_id = conversation_id
+
+    st.session_state.show_home = False
+
+    history.save_message(
+        conversation_id=conversation_id,
+        user_id=user.id,
+        role="user",
+        content=prompt,
+    )
+
+    render_user_message({"content": prompt})
+
+    with st.chat_message("assistant"):
+        st.markdown('<div class="assistant-name">Doc-Sceptic</div>', unsafe_allow_html=True)
+        with st.status("Analyse de la demande...", expanded=False) as status:
+            result = DataArchitectureAgent(settings, st.session_state.sb).ask(prompt)
+            status.update(label="Réponse prête", state="complete")
+
+        render_decision(result.action)
+        st.markdown(result.answer)
+        render_sources(
+            [source.model_dump() for source in result.citations],
+            "new",
+        )
+
+    assistant_message = history.save_message(
+        conversation_id=conversation_id,
+        user_id=user.id,
+        role="assistant",
+        content=result.answer,
+        action=result.action,
+        confidence=result.confidence,
+        metadata={
+            "requirements": result.requirements.model_dump(),
+            "trace": result.trace,
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+        },
+    )
+
+    history.save_sources(
+        assistant_message["id"],
+        [source.model_dump() for source in result.citations],
+    )
+
+    st.rerun()

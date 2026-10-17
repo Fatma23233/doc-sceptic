@@ -1,0 +1,1530 @@
+{
+  "benchmark": "Doc-Sceptic benchmark v1",
+  "generated_at": "2026-10-17T11:22:49.476334+00:00",
+  "requested": 25,
+  "evaluated": 25,
+  "api_errors": 0,
+  "passed": 25,
+  "evaluated_score_percent": 100.0,
+  "results": [
+    {
+      "id": "wh_01",
+      "category": "warehouse_lakehouse",
+      "question": "Notre équipe travaille en T-SQL avec des données structurées, des transactions multi-tables et Power BI. Faut-il utiliser un Warehouse ou un Lakehouse ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "warehouse",
+        "domain": "warehouse_lakehouse"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "warehouse",
+        "domain": "warehouse_lakehouse",
+        "confidence": 0.48278863840374
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 11.644,
+      "answer": "**Faits établis** \n- Le Fabric Warehouse est un entrepôt relationnel développé principalement avec T‑SQL, supporte les transactions multi‑tables ACID, et permet l’intégration directe avec Power BI [S1][S3]. \n- Le Fabric Lakehouse est conçu pour stocker des données structurées et non structurées, utilise Delta Lake pour les transactions ACID, et expose un point de terminaison SQL analytics en lecture seule [S3][S4]. \n- Le point de terminaison SQL analytics d’un lakehouse permet de créer des vues, fonctions et procédures stockées, et de connecter Power BI [S4][S6]. \n- Les deux services partagent le même moteur SQL et stockent les données en format Delta sur OneLake [S1][S3]. \n- Le Warehouse offre un accès complet en écriture via T‑SQL (`COPY INTO`, `INSERT`, `CTAS`), tandis que le lakehouse ne permet pas d’écriture via le point de terminaison SQL [S4][S6]. \n- Les utilisateurs T‑SQL familiers avec les entrepôts relationnels peuvent migrer facilement vers le Fabric Warehouse, comme illustré par l’exemple de Susan [S5]. \n\n**Recommandation** \nÉtant donné que votre équipe travaille exclusivement avec des données structurées, utilise T‑SQL, gère des transactions multi‑tables et exploite Power BI, le **Fabric Warehouse** est le choix le plus adapté. Il offre la pleine capacité d’écriture en T‑SQL, la prise en charge des transactions ACID multi‑tables, et une intégration native avec Power BI, répondant ainsi à toutes vos contraintes. \n\n**Limites documentées** \nLes preuves sélectionnées ne documentent pas de limite pertinente pour cette question.",
+      "sources": [
+        {
+          "title": "decision-guide-lakehouse-warehouse",
+          "section": "Evaluate each service",
+          "source_path": "fundamentals/decision-guide-lakehouse-warehouse.md",
+          "score": 0.48278863840374
+        },
+        {
+          "title": "decision-guide-lakehouse-warehouse",
+          "section": "Evaluate each service",
+          "source_path": "fundamentals/decision-guide-lakehouse-warehouse.md",
+          "score": 0.482585181881767
+        },
+        {
+          "title": "What is a lakehouse in Microsoft Fabric?",
+          "section": "Lakehouse vs. warehouse",
+          "source_path": "data-engineering/lakehouse-overview.md",
+          "score": 0.456212227796054
+        },
+        {
+          "title": "What is a lakehouse in Microsoft Fabric?",
+          "section": "Lakehouse SQL analytics endpoint",
+          "source_path": "data-engineering/lakehouse-overview.md",
+          "score": 0.447791400946725
+        },
+        {
+          "title": "decision-guide-data-store",
+          "section": "Scenario 1",
+          "source_path": "fundamentals/decision-guide-data-store.md",
+          "score": 0.446680826344395
+        },
+        {
+          "title": "What is the SQL analytics endpoint for a lakehouse?",
+          "section": "What you can do",
+          "source_path": "data-engineering/lakehouse-sql-analytics-endpoint.md",
+          "score": 0.437511244413556
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : warehouse_lakehouse.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.483; couverture=1.00; document du domaine=True; preuve transactionnelle=True.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "wh_02",
+      "category": "warehouse_lakehouse",
+      "question": "J'ai besoin de modifier plusieurs tables dans une même transaction ACID. Quelle solution Microsoft Fabric correspond le mieux à ce besoin ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "warehouse",
+        "domain": "warehouse_lakehouse"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "warehouse",
+        "domain": "warehouse_lakehouse",
+        "confidence": 0.444501135080986
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 4.064,
+      "answer": "**Faits établis** \n- Le Fabric Data Warehouse offre un support complet des transactions ACID multi‑tables via son moteur SQL T‑SQL. [S2] \n- Le Lakehouse, bien qu’utilisant Delta Lake pour les transactions, ne garantit pas la même prise en charge ACID multi‑tables que le Warehouse. [S2] \n\n**Recommandation** \nUtilisez un **Fabric Data Warehouse** pour exécuter vos modifications sur plusieurs tables dans une seule transaction ACID. \n\n**Limites documentées** \nLes preuves sélectionnées ne documentent pas de limite pertinente pour cette question.",
+      "sources": [
+        {
+          "title": "decision-guide-data-store",
+          "section": "Scenario 1",
+          "source_path": "fundamentals/decision-guide-data-store.md",
+          "score": 0.444501135080986
+        },
+        {
+          "title": "decision-guide-lakehouse-warehouse",
+          "section": "Evaluate each service",
+          "source_path": "fundamentals/decision-guide-lakehouse-warehouse.md",
+          "score": 0.427302760964139
+        },
+        {
+          "title": "decision-guide-data-store",
+          "section": "Microsoft Fabric decision guide: choose a data store",
+          "source_path": "fundamentals/decision-guide-data-store.md",
+          "score": 0.38081722488198
+        },
+        {
+          "title": "decision-guide-lakehouse-warehouse",
+          "section": "Microsoft Fabric decision guide: Choose between Warehouse and Lakehouse",
+          "source_path": "fundamentals/decision-guide-lakehouse-warehouse.md",
+          "score": 0.37720344202498
+        },
+        {
+          "title": "decision-guide-lakehouse-warehouse",
+          "section": "decision-guide-lakehouse-warehouse",
+          "source_path": "fundamentals/decision-guide-lakehouse-warehouse.md",
+          "score": 0.372832991311969
+        },
+        {
+          "title": "decision-guide-data-store",
+          "section": "Microsoft Fabric decision guide: choose a data store",
+          "source_path": "fundamentals/decision-guide-data-store.md",
+          "score": 0.357062204409444
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : warehouse_lakehouse.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.445; couverture=1.00; document du domaine=True; preuve transactionnelle=True.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "wh_03",
+      "category": "warehouse_lakehouse",
+      "question": "Notre équipe développe surtout en T-SQL et n'analyse que des données structurées. Quel stockage Fabric faut-il privilégier ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "warehouse",
+        "domain": "warehouse_lakehouse"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "warehouse",
+        "domain": "warehouse_lakehouse",
+        "confidence": 0.493825244903564
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 4.075,
+      "answer": "**Faits établis** \n- Le Fabric Data Warehouse est conçu pour les équipes qui utilisent principalement T‑SQL et qui ont besoin de transactions ACID multi‑tables [S1][S2]. \n- Le Fabric Lakehouse prend en charge à la fois Spark et T‑SQL, mais il est optimisé pour les données structurées et non structurées et ne fournit pas de transactions multi‑tables [S6]. \n- Les deux services stockent les données dans OneLake au format Delta, mais le Warehouse est le choix recommandé pour les scénarios BI et de modélisation dimensionnelle [S2]. \n\n**Recommandation** \nPour une équipe qui développe majoritairement en T‑SQL et analyse uniquement des données structurées, privilégiez le **Fabric Data Warehouse**. Il offre un environnement natif T‑SQL, des transactions ACID multi‑tables, et une intégration fluide avec les outils SQL existants (SSMS, SQL editor du portail) [S1][S2]. \n\n**Limites documentées** \nLes preuves sélectionnées ne documentent pas de limite pertinente pour cette question.",
+      "sources": [
+        {
+          "title": "decision-guide-data-store",
+          "section": "Scenario 1",
+          "source_path": "fundamentals/decision-guide-data-store.md",
+          "score": 0.493825244903564
+        },
+        {
+          "title": "decision-guide-lakehouse-warehouse",
+          "section": "Evaluate each service",
+          "source_path": "fundamentals/decision-guide-lakehouse-warehouse.md",
+          "score": 0.465075961938389
+        },
+        {
+          "title": "decision-guide-lakehouse-warehouse",
+          "section": "Evaluate each service",
+          "source_path": "fundamentals/decision-guide-lakehouse-warehouse.md",
+          "score": 0.452100276947021
+        },
+        {
+          "title": "lakehouse-sql-analytics-endpoint-use-cases",
+          "section": "Query as a service over your Delta tables from lakehouse and other items from OneLake",
+          "source_path": "data-engineering/lakehouse-sql-analytics-endpoint-use-cases.md",
+          "score": 0.437414646148682
+        },
+        {
+          "title": "lakehouse-sql-analytics-endpoint-use-cases",
+          "section": "Data Engineering with Spark, and Serving with SQL",
+          "source_path": "data-engineering/lakehouse-sql-analytics-endpoint-use-cases.md",
+          "score": 0.437013313948315
+        },
+        {
+          "title": "What is a lakehouse in Microsoft Fabric?",
+          "section": "Lakehouse vs. warehouse",
+          "source_path": "data-engineering/lakehouse-overview.md",
+          "score": 0.426867723464966
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : warehouse_lakehouse.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.494; couverture=1.00; document du domaine=True; preuve transactionnelle=False.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "lh_01",
+      "category": "warehouse_lakehouse",
+      "question": "Nous traitons des données structurées et non structurées avec PySpark et Spark. Warehouse ou Lakehouse ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "lakehouse",
+        "domain": "warehouse_lakehouse"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "lakehouse",
+        "domain": "warehouse_lakehouse",
+        "confidence": 0.546424451683495
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 3.878,
+      "answer": "**Faits établis** \n- Un lakehouse dans Microsoft Fabric combine la scalabilité d’un data lake avec les capacités de requête d’un warehouse ; il stocke des données structurées et non structurées dans un même emplacement [S2][S4]. \n- Le lakehouse est géré avec Delta Lake, offrant transactions ACID, enforcement de schéma et time‑travel [S1][S2]. \n- Les développeurs utilisant Apache Spark (Python, Scala, Spark SQL, R) sont orientés vers le lakehouse, tandis que les équipes T‑SQL privilégient le warehouse [S3]. \n- Le lakehouse ne supporte pas les transactions multi‑table, contrairement au warehouse [S4]. \n- Les données peuvent être ingérées via notebooks, pipelines, dataflows ou shortcuts dans OneLake, sans duplication [S1][S2]. \n- Le lakehouse permet l’accès en lecture seule via un endpoint SQL pour les requêtes T‑SQL [S1]. \n\n**Recommandation** \nÉtant donné que vous traitez à la fois des données structurées et non structurées avec PySpark et Spark, le **lakehouse** est la solution la plus adaptée : il répond à vos besoins de traitement Spark, de stockage unifié et de gestion Delta Lake, tout en offrant un accès SQL pour les analystes [S3][S4]. \n\n**Limites documentées** \n- Le lakehouse ne prend pas en charge les transactions multi‑table [S4]. \n- Si votre charge de travail nécessite des transactions multi‑table, le warehouse serait requis [S4]. \n- Les preuves sélectionnées ne documentent pas d’autres limites spécifiques à votre scénario.",
+      "sources": [
+        {
+          "title": "decision-guide-lakehouse-warehouse",
+          "section": "Evaluate each service",
+          "source_path": "fundamentals/decision-guide-lakehouse-warehouse.md",
+          "score": 0.546424451683495
+        },
+        {
+          "title": "What is a lakehouse in Microsoft Fabric?",
+          "section": "What is a lakehouse in Microsoft Fabric?",
+          "source_path": "data-engineering/lakehouse-overview.md",
+          "score": 0.52396189427603
+        },
+        {
+          "title": "decision-guide-lakehouse-warehouse",
+          "section": "Choose a candidate service",
+          "source_path": "fundamentals/decision-guide-lakehouse-warehouse.md",
+          "score": 0.478928074868679
+        },
+        {
+          "title": "What is a lakehouse in Microsoft Fabric?",
+          "section": "Lakehouse vs. warehouse",
+          "source_path": "data-engineering/lakehouse-overview.md",
+          "score": 0.478581781471862
+        },
+        {
+          "title": "Spark views in lakehouses",
+          "section": "Spark views in lakehouses",
+          "source_path": "data-engineering/lakehouse-spark-views.md",
+          "score": 0.473309631746434
+        },
+        {
+          "title": "onelake-medallion-lakehouse-architecture",
+          "section": "Medallion architecture in OneLake",
+          "source_path": "onelake/onelake-medallion-lakehouse-architecture.md",
+          "score": 0.459833703642081
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : warehouse_lakehouse.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.546; couverture=1.00; document du domaine=True; preuve transactionnelle=False.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "lh_02",
+      "category": "data_engineering",
+      "question": "Nos data engineers utilisent PySpark et des notebooks pour transformer des fichiers JSON et Parquet dans OneLake. Quelle architecture de stockage Fabric est la plus adaptée ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "lakehouse",
+        "domain": "data_engineering"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "lakehouse",
+        "domain": "data_engineering",
+        "confidence": 0.54491909206878
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 4.073,
+      "answer": "**Faits établis** \n- Fabric Data Engineering permet d’utiliser des notebooks et des jobs Spark pour ingérer, préparer et transformer des données : « Use notebooks to write code for data ingestion, preparation, and transformation » [S1]. \n- Le Lakehouse de Fabric stocke les données dans OneLake au format Delta : « Stores data in OneLake in open Delta format » [S3]. \n- Le Lakehouse supporte les types de données structurés et non structurés : « Data types | Structured and unstructured » [S4]. \n- Le Lakehouse est conçu pour les développeurs Spark : « Primary development tool | Apache Spark (Python, Scala, SQL, R) » [S4]. \n- Le Lakehouse ne fournit pas de transactions multi‑table : « Multi‑table transactions | No » [S4]. \n- Le Lakehouse offre un accès en lecture via un SQL analytics endpoint : « A SQL analytics endpoint can read data in the `/tables` folder within OneLake » [S5].\n\n**Recommandation** \nPour des data engineers qui utilisent PySpark et des notebooks pour transformer des fichiers JSON et Parquet dans OneLake, la **architecture Lakehouse** de Fabric est la plus adaptée. Elle permet d’ingérer les fichiers bruts dans le dossier `/Files`, de les transformer avec Spark dans des notebooks, puis de les enregistrer en Delta Lake dans le dossier `/Tables`. Les notebooks Spark sont le principal outil de développement du Lakehouse, et le stockage Delta dans OneLake assure la gouvernance et la réutilisation des données.\n\n**Limites documentées** \nLes preuves sélectionnées ne documentent pas de limite pertinente pour cette question.",
+      "sources": [
+        {
+          "title": "What is Microsoft Fabric Data Engineering?",
+          "section": "What is Microsoft Fabric Data Engineering?",
+          "source_path": "data-engineering/data-engineering-overview.md",
+          "score": 0.54491909206878
+        },
+        {
+          "title": "decision-guide-lakehouse-warehouse",
+          "section": "Evaluate each service",
+          "source_path": "fundamentals/decision-guide-lakehouse-warehouse.md",
+          "score": 0.507092159563771
+        },
+        {
+          "title": "decision-guide-lakehouse-warehouse",
+          "section": "Evaluate each service",
+          "source_path": "fundamentals/decision-guide-lakehouse-warehouse.md",
+          "score": 0.486744221435031
+        },
+        {
+          "title": "What is a lakehouse in Microsoft Fabric?",
+          "section": "Lakehouse vs. warehouse",
+          "source_path": "data-engineering/lakehouse-overview.md",
+          "score": 0.473791571033504
+        },
+        {
+          "title": "lakehouse-sql-analytics-endpoint-use-cases",
+          "section": "Query as a service over your Delta tables from lakehouse and other items from OneLake",
+          "source_path": "data-engineering/lakehouse-sql-analytics-endpoint-use-cases.md",
+          "score": 0.440454122993105
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : data_engineering.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.545; couverture=1.00; document du domaine=True; preuve transactionnelle=False.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "hybrid_01",
+      "category": "warehouse_lakehouse",
+      "question": "Les data engineers transforment les données avec Spark, tandis que les analystes travaillent principalement en T-SQL et Power BI. Peut-on combiner Lakehouse et Warehouse ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "hybrid",
+        "domain": "warehouse_lakehouse"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "hybrid",
+        "domain": "warehouse_lakehouse",
+        "confidence": 0.586398566579905
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 4.796,
+      "answer": "**Faits établis** \n- Un lakehouse et un warehouse partagent le même moteur SQL et stockent les données en format Delta sur OneLake [S1][S4]. \n- Le lakehouse permet l’accès Spark (Spark notebooks, pipelines, dataflows) tandis que le warehouse est conçu pour T‑SQL [S1][S4]. \n- Les deux services peuvent coexister dans le même workspace : on peut transformer les données dans un lakehouse avec Spark puis exposer des jeux de données curés à un warehouse pour le reporting [S4]. \n- Le lakehouse offre un accès « live » aux données externes via des raccourcis OneLake sans duplication [S1][S2]. \n- Le warehouse fournit des transactions multi‑tables ACID, des vues, des fonctions et des procédures stockées [S6]. \n- Power BI s’intègre aux deux services [S2][S6].\n\n**Recommandation** \nPour une équipe où les data engineers utilisent Spark et les analystes utilisent T‑SQL et Power BI, la meilleure approche est de **combiner les deux** : \n1. **Lakehouse** : ingérer et transformer les données brutes avec Spark (notebooks, pipelines, dataflows). \n2. **Warehouse** : créer des tables ou des vues curées à partir du lakehouse (via `CREATE TABLE AS SELECT`, `CTAS`, ou des procédures stockées) pour les besoins de reporting et d’analyse T‑SQL. \n3. Utiliser Power BI pour consommer les tables du warehouse tout en pouvant accéder directement aux tables Delta du lakehouse si besoin de visualisations plus flexibles. \nCette architecture évite la duplication de données, profite des capacités de traitement Spark pour l’ingestion et de la robustesse transactionnelle du warehouse pour le reporting [S4][S5].\n\n**Limites documentées** \nLes preuves sélectionnées ne documentent pas de limite pertinente pour cette question.",
+      "sources": [
+        {
+          "title": "decision-guide-lakehouse-warehouse",
+          "section": "Evaluate each service",
+          "source_path": "fundamentals/decision-guide-lakehouse-warehouse.md",
+          "score": 0.586398566579905
+        },
+        {
+          "title": "What is a lakehouse in Microsoft Fabric?",
+          "section": "What is a lakehouse in Microsoft Fabric?",
+          "source_path": "data-engineering/lakehouse-overview.md",
+          "score": 0.56536308733445
+        },
+        {
+          "title": "Microsoft Fabric decision guide: copy activity, Copy job, dataflow, Eventstream, or Spark",
+          "section": "Copy activity, Copy job, dataflow, Eventstream, and Spark properties",
+          "source_path": "fundamentals/decision-guide-pipeline-dataflow-spark.md",
+          "score": 0.51645919582491
+        },
+        {
+          "title": "What is a lakehouse in Microsoft Fabric?",
+          "section": "Lakehouse vs. warehouse",
+          "source_path": "data-engineering/lakehouse-overview.md",
+          "score": 0.491886204964746
+        },
+        {
+          "title": "lakehouse-sql-analytics-endpoint-use-cases",
+          "section": "Data Engineering with Spark, and Serving with SQL",
+          "source_path": "data-engineering/lakehouse-sql-analytics-endpoint-use-cases.md",
+          "score": 0.490039194817639
+        },
+        {
+          "title": "decision-guide-lakehouse-warehouse",
+          "section": "Evaluate each service",
+          "source_path": "fundamentals/decision-guide-lakehouse-warehouse.md",
+          "score": 0.481172475605165
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : warehouse_lakehouse.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.586; couverture=1.00; document du domaine=True; preuve transactionnelle=False.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "de_01",
+      "category": "data_engineering",
+      "question": "Nous voulons utiliser des notebooks Python et Spark pour ingérer, préparer et transformer de gros volumes de données dans Microsoft Fabric. Quel composant faut-il privilégier ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "any_grounded",
+        "domain": "data_engineering"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "lakehouse",
+        "domain": "data_engineering",
+        "confidence": 0.509297752380371
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 3.974,
+      "answer": "**Faits établis** \n- Les notebooks de Fabric permettent d’écrire et d’exécuter du code Python, Scala, R ou SQL pour l’ingestion, la préparation et l’analyse des données [S3]. \n- Le principal outil de développement pour un lakehouse est Apache Spark (Python, Scala, SQL, R) [S4]. \n- Pour des tâches d’ETL à grande échelle, Fabric propose des « Spark job definitions » qui exécutent des applications Spark compilées en Java, Scala ou Python [S1]. \n- Les pipelines et les dataflows sont également disponibles, mais ils sont plus orientés vers des scénarios d’ingestion ou de transformation à faible code [S1].\n\n**Recommandation** \nPrivilégiez l’utilisation de **Spark job definitions** (ou de notebooks Spark) pour ingérer, préparer et transformer de gros volumes de données dans Microsoft Fabric. Cela vous donne un environnement distribué capable de traiter de grandes quantités de données en parallèle, tout en restant dans l’écosystème de développement natif du lakehouse [S1][S4].\n\n**Limites documentées** \nLes preuves sélectionnées ne documentent pas de limite pertinente pour cette question.",
+      "sources": [
+        {
+          "title": "What is a lakehouse in Microsoft Fabric?",
+          "section": "Work with lakehouse data",
+          "source_path": "data-engineering/lakehouse-overview.md",
+          "score": 0.509297752380371
+        },
+        {
+          "title": "Microsoft Fabric decision guide: copy activity, Copy job, dataflow, Eventstream, or Spark",
+          "section": "Scenario 4",
+          "source_path": "fundamentals/decision-guide-pipeline-dataflow-spark.md",
+          "score": 0.44771842956543
+        },
+        {
+          "title": "What is Microsoft Fabric Data Engineering?",
+          "section": "Notebook",
+          "source_path": "data-engineering/data-engineering-overview.md",
+          "score": 0.419061756134033
+        },
+        {
+          "title": "What is a lakehouse in Microsoft Fabric?",
+          "section": "Lakehouse vs. warehouse",
+          "source_path": "data-engineering/lakehouse-overview.md",
+          "score": 0.392539525032043
+        },
+        {
+          "title": "Use a notebook to load data into your lakehouse",
+          "section": "Load data with Pandas API",
+          "source_path": "data-engineering/lakehouse-notebook-load-data.md",
+          "score": 0.391587782407536
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : data_engineering.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.509; couverture=1.00; document du domaine=True; preuve transactionnelle=False.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "de_02",
+      "category": "data_engineering",
+      "question": "Je dois traiter des données non structurées avec PySpark puis les rendre accessibles pour l'analyse. Quelle approche Fabric recommandes-tu ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "lakehouse",
+        "domain": "data_engineering"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "lakehouse",
+        "domain": "data_engineering",
+        "confidence": 0.492433041785179
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 4.184,
+      "answer": "**Faits établis** \n- Un lakehouse Fabric permet de stocker à la fois des données structurées et non structurées dans un même emplacement, géré par Delta Lake [S2]. \n- Les notebooks Spark peuvent ingérer, transformer et enrichir ces données non structurées, puis créer des tables Delta [S6]. \n- Les tables Delta ainsi créées peuvent être exposées via des vues Spark ou via un point de terminaison SQL analytics, offrant un accès en lecture seule aux analystes [S1][S6]. \n- Les vues Spark ne dupliquent pas les données et exécutent la requête sous‑jacente à chaque lecture, ce qui évite de stocker des résultats intermédiaires [S1]. \n- Le lakehouse fournit un format Delta Lake pour les transactions ACID, l’enforcement de schéma et le time‑travel [S3]. \n\n**Recommandation** \n1. **Ingestion** : utilisez un notebook Spark pour lire vos fichiers non structurés (JSON, CSV, logs, etc.) et les écrire dans une table Delta dans votre lakehouse. \n2. **Modélisation** : créez une vue Spark (ou une vue matérialisée Delta si vous avez besoin de persister les résultats) pour encapsuler la logique de transformation et simplifier l’accès aux données pour les analystes. \n3. **Accès analytique** : exposez la vue via le point de terminaison SQL analytics ou créez une table CTAS si vous avez besoin d’une version matérialisée ; les analystes peuvent alors interroger la vue avec T‑SQL sans duplication de données. \n\n**Limites documentées** \nLes preuves sélectionnées ne documentent pas de limite pertinente pour cette question.",
+      "sources": [
+        {
+          "title": "Spark views in lakehouses",
+          "section": "Spark views in lakehouses",
+          "source_path": "data-engineering/lakehouse-spark-views.md",
+          "score": 0.492433041785179
+        },
+        {
+          "title": "What is a lakehouse in Microsoft Fabric?",
+          "section": "What is a lakehouse in Microsoft Fabric?",
+          "source_path": "data-engineering/lakehouse-overview.md",
+          "score": 0.486005229592012
+        },
+        {
+          "title": "decision-guide-lakehouse-warehouse",
+          "section": "Evaluate each service",
+          "source_path": "fundamentals/decision-guide-lakehouse-warehouse.md",
+          "score": 0.454950639310442
+        },
+        {
+          "title": "What are lakehouse schemas?",
+          "section": "Enable schemas for existing lakehouses",
+          "source_path": "data-engineering/lakehouse-schemas.md",
+          "score": 0.433344789344694
+        },
+        {
+          "title": "What is Microsoft Fabric Data Engineering?",
+          "section": "Lakehouse",
+          "source_path": "data-engineering/data-engineering-overview.md",
+          "score": 0.425068950653079
+        },
+        {
+          "title": "lakehouse-sql-analytics-endpoint-use-cases",
+          "section": "Data Engineering with Spark, and Serving with SQL",
+          "source_path": "data-engineering/lakehouse-sql-analytics-endpoint-use-cases.md",
+          "score": 0.425032994147182
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : data_engineering.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.492; couverture=1.00; document du domaine=True; preuve transactionnelle=False.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "df_01",
+      "category": "data_factory",
+      "question": "Nous utilisons Azure Data Factory. Quels éléments dois-je examiner avant d'envisager Fabric Data Factory ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "any_grounded",
+        "domain": "data_factory"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "data_factory",
+        "domain": "data_factory",
+        "confidence": 0.622244548797607
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 4.391,
+      "answer": "**Faits établis** \n- Fabric Data Factory est la prochaine génération d’Azure Data Factory et utilise OneLake comme couche de stockage unifiée, ce qui réduit la complexité d’infrastructure et les mouvements de données [S1]. \n- Les pipelines Fabric peuvent travailler directement avec des données en direct via des raccourcis OneLake et le partage inter‑locataires [S1]. \n- Les activités et les connecteurs de Fabric Data Factory sont différents de ceux d’Azure Data Factory ; de nouvelles activités (ex. Office 365 Outlook) sont disponibles, mais toutes les activités ADF ne sont pas encore portées [S4]. \n- Les datasets d’Azure Data Factory sont remplacés par des connexions simples dans Fabric, ce qui simplifie la configuration [S4]. \n- La mise à niveau des pipelines contenant des Mapping Data Flows vers Fabric est en pré‑version publique et convertit les flows en MDF transforms dans Dataflow Gen2 [S2][S6]. \n- Les pipelines et les Mapping Data Flows originaux restent inchangés après la mise à niveau [S6]. \n- Azure Data Factory reste pleinement supporté et n’est pas déprécié [S5]. \n\n**Recommandation** \nAvant d’envisager Fabric Data Factory, vérifiez : \n1. **Compatibilité des connecteurs** – assurez‑vous que les connecteurs utilisés dans vos pipelines ADF sont supportés dans Fabric Data Factory [S4][S6]. \n2. **Limites des Mapping Data Flows** – examinez les limitations des MDF transforms et les exigences de réseau avant de migrer des pipelines contenant des Mapping Data Flows [S6]. \n3. **Évolution des activités** – identifiez les activités critiques qui ne sont pas encore portées à Fabric et évaluez l’impact sur vos processus [S4]. \n4. **Gestion des datasets** – planifiez la transition des datasets vers des connexions inline dans Fabric Data Factory [S4]. \n5. **Plan de mise à niveau** – utilisez le guide de planification de mise à niveau pour préparer la migration et tester les pipelines convertis [S1][S2]. \n\n**Limites documentées** \nLes preuves sélectionnées ne documentent pas de limite pertinente pour cette question.",
+      "sources": [
+        {
+          "title": "Differences between Azure Data Factory and Fabric Data Factory",
+          "section": "Differences between Azure Data Factory and Fabric Data Factory",
+          "source_path": "data-factory/compare-fabric-data-factory-and-azure-data-factory.md",
+          "score": 0.622244548797607
+        },
+        {
+          "title": "Upgrade Azure Data Factory pipelines with Mapping Data Flows to Fabric (Preview)",
+          "section": "Upgrade Azure Data Factory pipelines with Mapping Data Flows to Fabric (Preview)",
+          "source_path": "data-factory/dataflow-gen2-mapping-data-flows-transforms-upgrade.md",
+          "score": 0.608777152968816
+        },
+        {
+          "title": "Differences between Azure Data Factory and Fabric Data Factory",
+          "section": "Related content",
+          "source_path": "data-factory/compare-fabric-data-factory-and-azure-data-factory.md",
+          "score": 0.606575071419772
+        },
+        {
+          "title": "Differences between Azure Data Factory and Fabric Data Factory",
+          "section": "Compare features side by side",
+          "source_path": "data-factory/compare-fabric-data-factory-and-azure-data-factory.md",
+          "score": 0.59682674407959
+        },
+        {
+          "title": "Upgrade to Fabric Data Factory",
+          "section": "Does this signal that Azure Data Factory is being deprecated?",
+          "source_path": "data-factory/how-to-upgrade-your-azure-data-factory-pipelines-to-fabric-data-factory.md",
+          "score": 0.577721370594421
+        },
+        {
+          "title": "Upgrade Azure Data Factory pipelines with Mapping Data Flows to Fabric (Preview)",
+          "section": "Supported upgrade scenarios",
+          "source_path": "data-factory/dataflow-gen2-mapping-data-flows-transforms-upgrade.md",
+          "score": 0.576818561553955
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : data_factory.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.622; couverture=1.00; document du domaine=True; preuve transactionnelle=False.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "df_02",
+      "category": "data_factory",
+      "question": "Nous avons des pipelines Azure Data Factory contenant des Mapping Data Flows. Que faut-il vérifier avant un upgrade vers Fabric Data Factory ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "any_grounded",
+        "domain": "data_factory"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "unknown",
+        "domain": "data_factory",
+        "confidence": 0.665901343118984
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 4.021,
+      "answer": "**Faits établis** \n- Avant l’upgrade, il faut **examiner les limitations des MDF transforms** (transformations, connecteurs, méthodes d’authentification et exigences réseau) afin de s’assurer que les flux de données actuels sont compatibles [S2]. \n- Il faut **vérifier les connexions** : les services liés (linked services) utilisés par les pipelines et les Mapping Data Flows doivent être mappés à des connexions Fabric existantes ou créées [S5]. \n- Les **périphériques non mappés** désactivent les activités dépendantes ; il faut donc configurer les connexions requises et réactiver les activités avant d’exécuter les pipelines mis à jour [S5]. \n- L’expérience d’upgrade conserve les pipelines et les Mapping Data Flows originaux inchangés, tout en créant les nouveaux éléments dans un dossier préfixé par le nom de l’ADF source [S3]. \n- L’upgrade est en **prévisualisation publique** et peut changer ; il faut donc suivre les instructions de l’expérience d’upgrade intégrée [S1].\n\n**Recommandation** \n1. **Revue des limitations** : consultez la liste des limitations MDF, des connecteurs supportés, des transformations disponibles, des méthodes d’authentification et des exigences réseau [S2]. \n2. **Mapping des connexions** : utilisez l’étape « Review connections » pour mapper chaque linked service à une connexion Fabric, créer les connexions manquantes et confirmer que chaque source et destination est valide [S5]. \n3. **Validation des pipelines** : vérifiez que les pipelines sélectionnés sont bien compatibles (contiennent uniquement des Mapping Data Flows supportés) [S2]. \n4. **Exécution de l’upgrade** : lancez l’upgrade via l’expérience intégrée, surveillez le statut de chaque élément et vérifiez le dossier de destination [S3]. \n5. **Post‑upgrade** : réactivez les activités désactivées, testez les flux de données et assurez‑vous que les performances et la connectivité sont conformes aux attentes.\n\n**Limites documentées** \nLes preuves sélectionnées ne documentent pas de limite pertinente pour cette question.",
+      "sources": [
+        {
+          "title": "Upgrade Azure Data Factory pipelines with Mapping Data Flows to Fabric (Preview)",
+          "section": "Upgrade Azure Data Factory pipelines with Mapping Data Flows to Fabric (Preview)",
+          "source_path": "data-factory/dataflow-gen2-mapping-data-flows-transforms-upgrade.md",
+          "score": 0.665901343118984
+        },
+        {
+          "title": "Upgrade Azure Data Factory pipelines with Mapping Data Flows to Fabric (Preview)",
+          "section": "Supported upgrade scenarios",
+          "source_path": "data-factory/dataflow-gen2-mapping-data-flows-transforms-upgrade.md",
+          "score": 0.638242015943408
+        },
+        {
+          "title": "Upgrade Azure Data Factory pipelines with Mapping Data Flows to Fabric (Preview)",
+          "section": "Step 4: Start the upgrade",
+          "source_path": "data-factory/dataflow-gen2-mapping-data-flows-transforms-upgrade.md",
+          "score": 0.635299654567283
+        },
+        {
+          "title": "Differences between Azure Data Factory and Fabric Data Factory",
+          "section": "Related content",
+          "source_path": "data-factory/compare-fabric-data-factory-and-azure-data-factory.md",
+          "score": 0.602015137432201
+        },
+        {
+          "title": "Upgrade Azure Data Factory pipelines with Mapping Data Flows to Fabric (Preview)",
+          "section": "Step 3: Review connections",
+          "source_path": "data-factory/dataflow-gen2-mapping-data-flows-transforms-upgrade.md",
+          "score": 0.594929659668825
+        },
+        {
+          "title": "Differences between Azure Data Factory and Fabric Data Factory",
+          "section": "Compare features side by side",
+          "source_path": "data-factory/compare-fabric-data-factory-and-azure-data-factory.md",
+          "score": 0.5893250114128
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : data_factory.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.666; couverture=1.00; document du domaine=True; preuve transactionnelle=False.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "df_03",
+      "category": "data_factory",
+      "question": "Quelles différences dois-je examiner entre les pipelines Azure Data Factory et les pipelines Fabric Data Factory ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "any_grounded",
+        "domain": "data_factory"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "unknown",
+        "domain": "data_factory",
+        "confidence": 0.597785359687052
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 4.228,
+      "answer": "**Faits établis** \n- Les pipelines Azure Data Factory (ADF) et Fabric Data Factory (FDF) partagent le même nom de composant « Pipeline », mais les pipelines FDF sont conçus pour s’intégrer « seamlessly with lakehouses, warehouses, and other Fabric items right out of the box » [S2]. \n- FDF introduit un modèle de données simplifié : il n’utilise plus de « Dataset » ; les propriétés de données sont définies directement dans les activités, tandis que les « Connections » remplacent les « Linked Service » [S2]. \n- FDF propose plus d’activités SaaS, dont l’activité Office 365 Outlook qui n’est pas disponible dans ADF [S2]. \n- Les flux de données (Mapping Data Flow) d’ADF sont convertis en « Dataflow Gen2 » avec des transformations MDF dans FDF, conservant l’expérience d’édition et le modèle d’exécution Spark [S2][S3]. \n- L’upgrade d’un pipeline ADF vers FDF se fait via l’expérience d’upgrade intégrée, qui conserve les pipelines et flux d’origine inchangés et place les éléments mis à jour dans un dossier préfixé par le nom de l’ADF source [S4][S6]. \n- Les nouvelles fonctionnalités développées pour FDF ne sont pas rétroportées vers ADF ou Azure Synapse pipelines ; les deux plateformes suivent des road‑maps séparés [S1]. \n\n**Recommandation** \n- Si votre architecture repose déjà sur OneLake ou nécessite une intégration native avec les lakehouses et warehouses Fabric, migrez vers FDF pour bénéficier de la simplification des connexions et de l’accès direct aux données via OneLake [S3]. \n- Pour les pipelines contenant des Mapping Data Flows, utilisez l’expérience d’upgrade preview afin de convertir les flux en MDF et de profiter du modèle Spark [S5][S6]. \n- Évaluez les activités SaaS supplémentaires (ex. Office 365 Outlook) si votre flux de travail requiert ces intégrations [S2]. \n\n**Limites documentées** \n- Les preuves sélectionnées ne documentent pas de limite pertinente pour cette question.",
+      "sources": [
+        {
+          "title": "Differences between Azure Data Factory and Fabric Data Factory",
+          "section": "Related content",
+          "source_path": "data-factory/compare-fabric-data-factory-and-azure-data-factory.md",
+          "score": 0.597785359687052
+        },
+        {
+          "title": "Differences between Azure Data Factory and Fabric Data Factory",
+          "section": "Compare features side by side",
+          "source_path": "data-factory/compare-fabric-data-factory-and-azure-data-factory.md",
+          "score": 0.594225090570006
+        },
+        {
+          "title": "Differences between Azure Data Factory and Fabric Data Factory",
+          "section": "Differences between Azure Data Factory and Fabric Data Factory",
+          "source_path": "data-factory/compare-fabric-data-factory-and-azure-data-factory.md",
+          "score": 0.574479167892908
+        },
+        {
+          "title": "Upgrade Azure Data Factory pipelines with Mapping Data Flows to Fabric (Preview)",
+          "section": "Step 4: Start the upgrade",
+          "source_path": "data-factory/dataflow-gen2-mapping-data-flows-transforms-upgrade.md",
+          "score": 0.555870754841844
+        },
+        {
+          "title": "Upgrade Azure Data Factory pipelines with Mapping Data Flows to Fabric (Preview)",
+          "section": "Upgrade Azure Data Factory pipelines with Mapping Data Flows to Fabric (Preview)",
+          "source_path": "data-factory/dataflow-gen2-mapping-data-flows-transforms-upgrade.md",
+          "score": 0.553425677018595
+        },
+        {
+          "title": "Upgrade Azure Data Factory pipelines with Mapping Data Flows to Fabric (Preview)",
+          "section": "Supported upgrade scenarios",
+          "source_path": "data-factory/dataflow-gen2-mapping-data-flows-transforms-upgrade.md",
+          "score": 0.52922941831438
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : data_factory.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.598; couverture=1.00; document du domaine=True; preuve transactionnelle=False.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "df_04",
+      "category": "data_factory",
+      "question": "Dans une migration Azure Data Factory vers Fabric, je veux vérifier les connecteurs, l'authentification et les contraintes réseau. Que dois-je examiner ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "any_grounded",
+        "domain": "data_factory"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "data_factory",
+        "domain": "data_factory",
+        "confidence": 0.63143892288208
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 5.616,
+      "answer": "**Faits établis** \n- Les connecteurs disponibles dans Azure Data Factory sont également disponibles dans Fabric Data Factory : Azure connectors, Fabric & Data Warehouse connectors, Database connectors, File connectors, File format connectors, NoSQL connectors, Services and apps connectors, Generic connectors [S2]. \n- Fabric Data Factory utilise OneLake comme couche de stockage unifiée, ce qui simplifie la complexité d’infrastructure et réduit les mouvements de données [S6]. \n- Les pipelines Azure Data Factory contenant des Mapping Data Flows peuvent être mis à jour vers Fabric Data Factory via l’expérience d’upgrade intégrée, où les transforms sont convertis en MDF Gen2 [S4]. \n- Azure Data Factory reste pleinement supporté et n’est pas déprécié [S5]. \n\n**Recommandation** \n1. **Vérifier la parité des connecteurs** : consultez la liste des connecteurs disponibles dans Fabric Data Factory pour vous assurer que tous les points de terminaison utilisés dans vos pipelines actuels sont pris en charge [S2]. \n2. **Examiner les mécanismes d’authentification** : comme Fabric Data Factory conserve les mêmes permissions et flux de travail que Azure Data Factory, les méthodes d’authentification (Azure AD, Managed Identities, etc.) restent applicables [S5]. \n3. **Évaluer les contraintes réseau** : l’utilisation de OneLake comme couche de stockage unifiée peut modifier les exigences réseau (ex. accès à OneLake, partage inter‑locataires). Planifiez la migration en tenant compte de ces aspects [S6]. \n4. **Planifier l’upgrade des Mapping Data Flows** : utilisez l’expérience d’upgrade intégrée pour convertir les pipelines existants vers Fabric Data Factory [S4]. \n\n**Limites documentées** \nLes preuves sélectionnées ne documentent pas de limite pertinente pour cette question.",
+      "sources": [
+        {
+          "title": "Upgrade to Fabric Data Factory",
+          "section": "Related content",
+          "source_path": "data-factory/how-to-upgrade-your-azure-data-factory-pipelines-to-fabric-data-factory.md",
+          "score": 0.63143892288208
+        },
+        {
+          "title": "Connector capability comparison between Azure Data Factory and Fabric Data Factory",
+          "section": "Connector capability comparison between Azure Data Factory and Fabric Data Factory",
+          "source_path": "data-factory/connector-parity.md",
+          "score": 0.613687764782444
+        },
+        {
+          "title": "Differences between Azure Data Factory and Fabric Data Factory",
+          "section": "Related content",
+          "source_path": "data-factory/compare-fabric-data-factory-and-azure-data-factory.md",
+          "score": 0.597580874110409
+        },
+        {
+          "title": "Upgrade Azure Data Factory pipelines with Mapping Data Flows to Fabric (Preview)",
+          "section": "Upgrade Azure Data Factory pipelines with Mapping Data Flows to Fabric (Preview)",
+          "source_path": "data-factory/dataflow-gen2-mapping-data-flows-transforms-upgrade.md",
+          "score": 0.587988103152032
+        },
+        {
+          "title": "Upgrade to Fabric Data Factory",
+          "section": "Does this signal that Azure Data Factory is being deprecated?",
+          "source_path": "data-factory/how-to-upgrade-your-azure-data-factory-pipelines-to-fabric-data-factory.md",
+          "score": 0.565626206062663
+        },
+        {
+          "title": "Differences between Azure Data Factory and Fabric Data Factory",
+          "section": "Differences between Azure Data Factory and Fabric Data Factory",
+          "source_path": "data-factory/compare-fabric-data-factory-and-azure-data-factory.md",
+          "score": 0.562596368789673
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : data_factory.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.631; couverture=1.00; document du domaine=True; preuve transactionnelle=False.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "pbi_01",
+      "category": "power_bi",
+      "question": "Nous avons des données dans Fabric et Power BI est notre principal outil de consommation. Quelles options Fabric dois-je examiner pour servir les données aux analystes ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "any_grounded",
+        "domain": "power_bi"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "lakehouse",
+        "domain": "power_bi",
+        "confidence": 0.522586123789185
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 4.284,
+      "answer": "**Faits établis** \n- Fabric propose un mode Direct Lake qui permet de servir des tables Delta stockées dans OneLake ou via un endpoint SQL analytics [S1][S6]. \n- Un lakehouse créé dans Fabric génère automatiquement un endpoint SQL analytics qui peut être connecté directement à Power BI pour construire des modèles sémantiques [S2]. \n- Les tables Delta accessibles via l’endpoint SQL analytics sont en lecture seule et ne supportent pas la surface complète de T‑SQL [S2]. \n- Power BI Desktop peut travailler sur un projet PBIP en mode Direct Lake en se connectant à un modèle sémantique distant dans un workspace Fabric [S4][S5]. \n- Le mode Direct Lake sur OneLake permet d’utiliser plusieurs sources de données et de combiner ces tables avec des tables Import dans un modèle composite [S1]. \n- Le mode Direct Lake sur SQL ne supporte qu’une seule source de données et ne permet pas de combiner avec d’autres modes [S1]. \n- Les modèles sémantiques créés dans Fabric peuvent être publiés via Git Integration ou les APIs Fabric [S5]. \n\n**Recommandation** \nPour servir les données aux analystes Power BI : \n1. **Créer un lakehouse** dans Fabric afin d’obtenir un endpoint SQL analytics [S2]. \n2. **Convertir les jeux de données existants en tables Delta** (ou les placer dans OneLake) pour qu’ils soient accessibles via l’endpoint [S2]. \n3. **Utiliser le mode Direct Lake on OneLake** dans Power BI Desktop pour connecter le modèle sémantique à ces tables Delta [S1][S6]. \n4. **Construire un modèle composite** en ajoutant éventuellement des tables Import provenant d’autres sources si besoin [S1]. \n5. **Déployer le modèle sémantique** dans un workspace Fabric via Git Integration ou les APIs Fabric pour que les analystes puissent l’utiliser en production [S5]. \n\n**Limites documentées** \n- Le mode Direct Lake sur SQL ne permet pas de combiner plusieurs sources de données [S1]. \n- Les tables accessibles via l’endpoint SQL analytics sont en lecture seule [S2]. \n- Le mode Direct Lake sur OneLake ne supporte pas la validation des rôles RLS depuis Power BI Desktop [S3]. \n- Le mode Direct Lake ne permet pas de publier directement depuis Power BI Desktop [S3][S5]. \n- Les formats autres que Delta (Parquet, CSV, etc.) ne sont pas interrogables via l’endpoint SQL analytics [S2].",
+      "sources": [
+        {
+          "title": "Direct Lake overview",
+          "section": "Compare storage mode capabilities",
+          "source_path": "fundamentals/direct-lake-overview.md",
+          "score": 0.522586123789185
+        },
+        {
+          "title": "What is a lakehouse in Microsoft Fabric?",
+          "section": "Lakehouse SQL analytics endpoint",
+          "source_path": "data-engineering/lakehouse-overview.md",
+          "score": 0.508552681380191
+        },
+        {
+          "title": "direct-lake-power-bi-desktop",
+          "section": "Considerations and limitations",
+          "source_path": "fundamentals/direct-lake-power-bi-desktop.md",
+          "score": 0.482091712951664
+        },
+        {
+          "title": "direct-lake-power-bi-desktop",
+          "section": "Power BI Project (PBIP)",
+          "source_path": "fundamentals/direct-lake-power-bi-desktop.md",
+          "score": 0.481767787722613
+        },
+        {
+          "title": "direct-lake-power-bi-project",
+          "section": "Direct Lake in Power BI Project (preview)",
+          "source_path": "fundamentals/direct-lake-power-bi-project.md",
+          "score": 0.478941888872273
+        },
+        {
+          "title": "Direct Lake overview",
+          "section": "Key concepts and terminology",
+          "source_path": "fundamentals/direct-lake-overview.md",
+          "score": 0.462071963425162
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : power_bi.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.523; couverture=1.00; document du domaine=True; preuve transactionnelle=False.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "pbi_02",
+      "category": "power_bi",
+      "question": "Nos tables Delta dans un Lakehouse doivent être consommées avec Power BI. Que dit la documentation Fabric sur cet usage ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "any_grounded",
+        "domain": "power_bi"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "lakehouse",
+        "domain": "power_bi",
+        "confidence": 0.570005430578863
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 4.176,
+      "answer": "**Faits établis** \n- Un lakehouse Fabric génère automatiquement un point de terminaison SQL analytics qui permet de **requêter les tables Delta avec T‑SQL** et de **connecter Power BI directement** pour créer un modèle sémantique [S1]. \n- Les modèles sémantiques créés dans Power BI Desktop avec des tables Direct Lake utilisent le mode de stockage **Direct Lake on OneLake** [S2]. \n- Le mode Direct Lake on OneLake permet de **combiner des tables Delta avec d’autres tables Import ou DirectQuery** dans un même modèle [S3]. \n- Direct Lake lit les tables Delta directement depuis OneLake [S5]. \n- Si la requête DAX nécessite plus de mémoire ou utilise des fonctionnalités non prises en charge (ex. vues SQL dans un Warehouse ou Lakehouse), le modèle peut **revenir automatiquement à DirectQuery**, ce qui peut impacter les performances [S4]. \n\n**Recommandation** \nPour consommer vos tables Delta dans un Lakehouse avec Power BI, créez un modèle sémantique en mode **Direct Lake on OneLake** depuis Power BI Desktop. Cela vous donne un accès direct aux tables Delta, évite la duplication de données et offre de meilleures performances que DirectQuery, à condition que les requêtes DAX restent dans les limites de mémoire et de fonctionnalités supportées. \n\n**Limites documentées** \n- Le point de terminaison SQL analytics ne supporte que les tables Delta [S1]. \n- Le mode Direct Lake peut **revenir à DirectQuery** en cas de pression mémoire ou de fonctionnalités non supportées, ce qui peut dégrader les performances [S4]. \n- Les modèles Direct Lake ne peuvent pas combiner des tables provenant de sources autres que Delta dans OneLake [S3]. \n- Les modèles Direct Lake ne supportent pas toutes les fonctionnalités T‑SQL d’un entrepôt complet [S1].",
+      "sources": [
+        {
+          "title": "What is a lakehouse in Microsoft Fabric?",
+          "section": "Lakehouse SQL analytics endpoint",
+          "source_path": "data-engineering/lakehouse-overview.md",
+          "score": 0.570005430578863
+        },
+        {
+          "title": "direct-lake-power-bi-desktop",
+          "section": "Create a semantic model with Direct Lake tables",
+          "source_path": "fundamentals/direct-lake-power-bi-desktop.md",
+          "score": 0.534620682436844
+        },
+        {
+          "title": "Direct Lake overview",
+          "section": "Compare storage mode capabilities",
+          "source_path": "fundamentals/direct-lake-overview.md",
+          "score": 0.531708669662476
+        },
+        {
+          "title": "direct-lake-analyze-query-processing",
+          "section": "Analyze query processing for Direct Lake semantic models",
+          "source_path": "fundamentals/direct-lake-analyze-query-processing.md",
+          "score": 0.525138537577479
+        },
+        {
+          "title": "Direct Lake overview",
+          "section": "Direct Lake overview",
+          "source_path": "fundamentals/direct-lake-overview.md",
+          "score": 0.490112113952637
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : power_bi.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.570; couverture=1.00; document du domaine=True; preuve transactionnelle=False.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "med_01",
+      "category": "medallion",
+      "question": "Je veux organiser mes données en Bronze, Silver et Gold dans Microsoft Fabric. Quelle architecture proposes-tu ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "any_grounded",
+        "domain": "medallion"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "unknown",
+        "domain": "medallion",
+        "confidence": 0.560604062044379
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 4.077,
+      "answer": "**Faits établis** \n- La medallion architecture se compose de trois couches : bronze (raw), silver (enriched) et gold (curated) [S1][S4]. \n- Dans Fabric, chaque couche peut être implémentée comme un lakehouse ; le bronze, le silver et le gold peuvent être créés dans des workspaces séparés pour une gouvernance accrue [S3]. \n- Le bronze doit conserver les données dans leur format d’origine (ou Parquet/Delta) ; si la source est déjà dans OneLake, un raccourci est recommandé [S3]. \n- Les couches silver et gold doivent être stockées sous forme de tables Delta pour bénéficier des performances et des fonctionnalités supplémentaires [S3]. \n- Les pipelines de transformation passent du bronze au silver (nettoyage, standardisation, déduplication) puis du silver au gold (organisation pour rapports et tableaux de bord) [S1][S6]. \n\n**Recommandation** \n1. **Créer un lakehouse Bronze** dans un workspace dédié, en stockant les données sources dans leur format d’origine (JSON, CSV, SQL export) ou en utilisant Delta si déjà compatible [S3]. \n2. **Créer un lakehouse Silver** dans un autre workspace, en lisant les données du bronze et en appliquant les transformations : normalisation des dates, conversion des devises, suppression des doublons, etc. [S6]. \n3. **Créer un lakehouse Gold** (ou un data warehouse) dans un troisième workspace, en construisant des tables Delta prêtes pour les rapports : tableaux de bord de ventes, valeur vie client, prévisions d’inventaire [S6]. \n4. **Utiliser les endpoints SQL** pour l’accès aux données des trois couches ; les utilisateurs métier peuvent interroger directement les lakehouses [S3]. \n5. **Gouverner chaque couche** séparément en appliquant des politiques de sécurité et de conformité propres à chaque workspace [S3]. \n\n**Limites documentées** \nLes preuves sélectionnées ne documentent pas de limite pertinente pour cette question.",
+      "sources": [
+        {
+          "title": "onelake-medallion-lakehouse-architecture",
+          "section": "What is medallion architecture?",
+          "source_path": "onelake/onelake-medallion-lakehouse-architecture.md",
+          "score": 0.560604062044379
+        },
+        {
+          "title": "onelake-medallion-lakehouse-architecture",
+          "section": "onelake-medallion-lakehouse-architecture",
+          "source_path": "onelake/onelake-medallion-lakehouse-architecture.md",
+          "score": 0.547619025338263
+        },
+        {
+          "title": "onelake-medallion-lakehouse-architecture",
+          "section": "Deployment model",
+          "source_path": "onelake/onelake-medallion-lakehouse-architecture.md",
+          "score": 0.543569755554199
+        },
+        {
+          "title": "onelake-medallion-lakehouse-architecture",
+          "section": "Understand medallion architecture for Fabric with OneLake",
+          "source_path": "onelake/onelake-medallion-lakehouse-architecture.md",
+          "score": 0.53287150067857
+        },
+        {
+          "title": "onelake-medallion-lakehouse-architecture",
+          "section": "Understand Delta table data storage",
+          "source_path": "onelake/onelake-medallion-lakehouse-architecture.md",
+          "score": 0.52287537319211
+        },
+        {
+          "title": "onelake-medallion-lakehouse-architecture",
+          "section": "Real-world example",
+          "source_path": "onelake/onelake-medallion-lakehouse-architecture.md",
+          "score": 0.471581411361694
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : medallion.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.561; couverture=1.00; document du domaine=True; preuve transactionnelle=False.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "med_02",
+      "category": "medallion",
+      "question": "Nous utilisons Spark pour nettoyer les données brutes avant de produire une couche Gold destinée à l'analyse. Comment structurer cela dans Fabric ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "any_grounded",
+        "domain": "medallion"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "lakehouse",
+        "domain": "medallion",
+        "confidence": 0.494518723920546
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 3.87,
+      "answer": "**Faits établis** \n- Dans Fabric, un *lakehouse* combine un data lake et un data warehouse : les données structurées sont stockées dans un format Delta Lake, ce qui permet des transactions ACID, l’application de schémas et le time‑travel [S6]. \n- Les traitements Spark sont exécutés via des *Spark job definitions* (applications compilées en Java, Scala ou Python) pour des ETL de production [S1][S2]. \n- Les tables créées dans le lakehouse sont automatiquement optimisées en Delta Lake [S2]. \n- Les vues Spark peuvent être créées dans un lakehouse schema‑enabled pour fournir un accès simplifié sans dupliquer les données [S4]. \n- Un *medallion architecture* (bronze → silver → gold) est recommandé pour organiser les couches de données [S5]. \n- Les couches Gold peuvent être exposées aux applications BI via des vues ou des tables créées par `CREATE TABLE AS SELECT` (CTAS) [S5].\n\n**Recommandation** \n1. **Créer un lakehouse** dans Fabric : cela vous donne un unique emplacement OneLake pour toutes vos données [S6]. \n2. **Ingester les données brutes** dans la couche Bronze en utilisant un *pipeline* (copy activity) ou un *Spark job definition* [S1]. \n3. **Nettoyer et transformer** les données avec un *Spark job definition* : chargez les fichiers bruts, appliquez les règles de nettoyage, puis écrivez le résultat dans une table Delta Lake de la couche Silver [S2]. \n4. **Créer la couche Gold** en exécutant un autre *Spark job definition* qui lit la table Silver, applique les agrégations ou enrichissements finaux, et écrit dans une table Delta Lake Gold [S5]. \n5. **Exposer la couche Gold** aux analystes : soit en créant une vue Spark (facile à maintenir, sans duplication) [S4], soit en créant une table matérialisée via `CREATE TABLE AS SELECT` si vous avez besoin de performances supplémentaires [S5]. \n6. **Consommer dans Power BI** ou d’autres outils via le *lakehouse SQL analytics endpoint* : cela évite de copier les données et permet d’utiliser T‑SQL directement sur les tables Delta Lake [S5].\n\n**Limites documentées** \nLes preuves sélectionnées ne documentent pas de limite pertinente pour cette question.",
+      "sources": [
+        {
+          "title": "What is a lakehouse in Microsoft Fabric?",
+          "section": "Work with lakehouse data",
+          "source_path": "data-engineering/lakehouse-overview.md",
+          "score": 0.494518723920546
+        },
+        {
+          "title": "Lakehouse and Delta Lake tables",
+          "section": "Apache Spark engine and data formats",
+          "source_path": "data-engineering/lakehouse-and-delta-tables.md",
+          "score": 0.492463508023724
+        },
+        {
+          "title": "What is Microsoft Fabric Data Engineering?",
+          "section": "Related content",
+          "source_path": "data-engineering/data-engineering-overview.md",
+          "score": 0.474641766388469
+        },
+        {
+          "title": "Spark views in lakehouses",
+          "section": "Spark views in lakehouses",
+          "source_path": "data-engineering/lakehouse-spark-views.md",
+          "score": 0.458917726842097
+        },
+        {
+          "title": "lakehouse-sql-analytics-endpoint-use-cases",
+          "section": "Data Engineering with Spark, and Serving with SQL",
+          "source_path": "data-engineering/lakehouse-sql-analytics-endpoint-use-cases.md",
+          "score": 0.458757672942948
+        },
+        {
+          "title": "What is a lakehouse in Microsoft Fabric?",
+          "section": "What is a lakehouse in Microsoft Fabric?",
+          "source_path": "data-engineering/lakehouse-overview.md",
+          "score": 0.451908506509915
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : medallion.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.495; couverture=1.00; document du domaine=True; preuve transactionnelle=False.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    },
+    {
+      "id": "clarify_01",
+      "category": "clarify",
+      "question": "Je démarre un projet Microsoft Fabric. Warehouse ou Lakehouse ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "clarify",
+        "choice": "none",
+        "domain": "warehouse_lakehouse"
+      },
+      "actual": {
+        "action": "clarify",
+        "choice": "unknown",
+        "domain": "warehouse_lakehouse",
+        "confidence": 1.0
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 0.006,
+      "answer": "Pour recommander sans deviner, précise : type de données, style de développement SQL ou Spark, besoin de transactions multi-tables, usage analytique ou Power BI.",
+      "sources": [],
+      "trace": [
+        "Contraintes extraites. Domaine : warehouse_lakehouse.",
+        "Clarification demandée."
+      ]
+    },
+    {
+      "id": "clarify_02",
+      "category": "clarify",
+      "question": "Quelle architecture Fabric dois-je choisir ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "clarify",
+        "choice": "none",
+        "domain": "fabric_general"
+      },
+      "actual": {
+        "action": "clarify",
+        "choice": "unknown",
+        "domain": "fabric_general",
+        "confidence": 1.0
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 0.007,
+      "answer": "Pour recommander sans deviner, précise : type de données, style de développement SQL ou Spark, besoin de transactions multi-tables, usage analytique ou Power BI.",
+      "sources": [],
+      "trace": [
+        "Contraintes extraites. Domaine : fabric_general.",
+        "Clarification demandée."
+      ]
+    },
+    {
+      "id": "abstain_01",
+      "category": "abstain",
+      "question": "Quel choix entre Warehouse et Lakehouse me coûtera exactement 1 247 euros par mois ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "abstain",
+        "choice": "none",
+        "domain": "warehouse_lakehouse"
+      },
+      "actual": {
+        "action": "abstain",
+        "choice": "unknown",
+        "domain": "warehouse_lakehouse",
+        "confidence": 0.0
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 0.006,
+      "answer": "Je ne dispose pas de preuves documentaires suffisamment directes pour répondre sans risque d’inventer. Précise le workload Fabric, les outils utilisés et la contrainte principale.",
+      "sources": [],
+      "trace": [
+        "Demande de coût, garantie ou performance exacte non démontrable.",
+        "Abstention déclenchée."
+      ]
+    },
+    {
+      "id": "abstain_02",
+      "category": "abstain",
+      "question": "Garantis-moi que mon architecture Microsoft Fabric n'aura jamais de panne pendant les cinq prochaines années.",
+      "status": "evaluated",
+      "expected": {
+        "action": "abstain",
+        "choice": "none",
+        "domain": "fabric_general"
+      },
+      "actual": {
+        "action": "abstain",
+        "choice": "unknown",
+        "domain": "fabric_general",
+        "confidence": 0.0
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 0.005,
+      "answer": "Je ne dispose pas de preuves documentaires suffisamment directes pour répondre sans risque d’inventer. Précise le workload Fabric, les outils utilisés et la contrainte principale.",
+      "sources": [],
+      "trace": [
+        "Demande de coût, garantie ou performance exacte non démontrable.",
+        "Abstention déclenchée."
+      ]
+    },
+    {
+      "id": "abstain_03",
+      "category": "abstain",
+      "question": "Donne-moi la latence exacte en millisecondes de mon futur Warehouse sans information sur la volumétrie, la capacité ou les requêtes.",
+      "status": "evaluated",
+      "expected": {
+        "action": "abstain",
+        "choice": "none",
+        "domain": "warehouse_lakehouse"
+      },
+      "actual": {
+        "action": "abstain",
+        "choice": "unknown",
+        "domain": "warehouse_lakehouse",
+        "confidence": 0.0
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 0.005,
+      "answer": "Je ne dispose pas de preuves documentaires suffisamment directes pour répondre sans risque d’inventer. Précise le workload Fabric, les outils utilisés et la contrainte principale.",
+      "sources": [],
+      "trace": [
+        "Demande de coût, garantie ou performance exacte non démontrable.",
+        "Abstention déclenchée."
+      ]
+    },
+    {
+      "id": "chat_01",
+      "category": "chat",
+      "question": "Bonjour",
+      "status": "evaluated",
+      "expected": {
+        "action": "chat",
+        "choice": "none",
+        "domain": "chat"
+      },
+      "actual": {
+        "action": "chat",
+        "choice": "unknown",
+        "domain": "chat",
+        "confidence": 1.0
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 0.004,
+      "answer": "Bonjour 🙂 Je suis **Doc-Sceptic**. Je suis là pour t’aider. Tu peux me parler naturellement ou me poser une question sur Microsoft Fabric.",
+      "sources": [],
+      "trace": [
+        "Message conversationnel détecté.",
+        "Réponse conversationnelle générée localement."
+      ]
+    },
+    {
+      "id": "chat_02",
+      "category": "chat",
+      "question": "Qui es-tu ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "chat",
+        "choice": "none",
+        "domain": "chat"
+      },
+      "actual": {
+        "action": "chat",
+        "choice": "unknown",
+        "domain": "chat",
+        "confidence": 1.0
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 0.003,
+      "answer": "Je suis **Doc-Sceptic**, un assistant de décision pour Microsoft Fabric. J’analyse les contraintes de ton projet, je recherche les passages pertinents dans la documentation indexée, puis je recommande une architecture seulement lorsque les preuves sont suffisantes.",
+      "sources": [],
+      "trace": [
+        "Message conversationnel détecté.",
+        "Réponse conversationnelle générée localement."
+      ]
+    },
+    {
+      "id": "chat_03",
+      "category": "chat",
+      "question": "Que peux-tu faire ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "chat",
+        "choice": "none",
+        "domain": "chat"
+      },
+      "actual": {
+        "action": "chat",
+        "choice": "data_factory",
+        "domain": "chat",
+        "confidence": 1.0
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 0.005,
+      "answer": "Bien sûr 🙂 Tu peux me demander de comparer Warehouse et Lakehouse, de proposer une architecture medallion, ou d’analyser un scénario SQL, Spark, Power BI ou Data Factory. Si ta question manque de contexte, je te demanderai simplement les précisions utiles.",
+      "sources": [],
+      "trace": [
+        "Message conversationnel détecté.",
+        "Réponse conversationnelle générée localement."
+      ]
+    },
+    {
+      "id": "store_01",
+      "category": "data_store",
+      "question": "Je dois choisir un stockage Fabric pour un workload transactionnel opérationnel OLTP et une base relationnelle normalisée. Quel datastore correspond à ce scénario ?",
+      "status": "evaluated",
+      "expected": {
+        "action": "recommend",
+        "choice": "sql_database",
+        "domain": "fabric_general"
+      },
+      "actual": {
+        "action": "recommend",
+        "choice": "sql_database",
+        "domain": "fabric_general",
+        "confidence": 0.455802461159083
+      },
+      "checks": {
+        "action": true,
+        "domain": true,
+        "choice": true,
+        "answer_terms": true,
+        "source_domain": true,
+        "sources_present": true,
+        "inline_citations": true
+      },
+      "passed": true,
+      "attempts": 1,
+      "elapsed_seconds": 3.826,
+      "answer": "**Faits établis** \n- Pour un workload transactionnel opérationnel OLTP et une base relationnelle normalisée, le guide de décision recommande d’utiliser **SQL database in Fabric**. [S1][S3] \n- Cette solution est disponible dans OneLake en format de table ouverte par défaut. [S1][S3] \n\n**Recommandation** \nOptez pour **SQL database in Fabric** afin de bénéficier d’un stockage transactionnel ACID, d’une modélisation relationnelle normalisée et d’une intégration native avec les autres services Fabric. \n\n**Limites documentées** \nLes preuves sélectionnées ne documentent pas de limite pertinente pour cette question.",
+      "sources": [
+        {
+          "title": "decision-guide-data-store",
+          "section": "Microsoft Fabric decision guide: choose a data store",
+          "source_path": "fundamentals/decision-guide-data-store.md",
+          "score": 0.455802461159083
+        },
+        {
+          "title": "decision-guide-lakehouse-warehouse",
+          "section": "Evaluate each service",
+          "source_path": "fundamentals/decision-guide-lakehouse-warehouse.md",
+          "score": 0.42231330605587
+        },
+        {
+          "title": "decision-guide-data-store",
+          "section": "Microsoft Fabric decision guide: choose a data store",
+          "source_path": "fundamentals/decision-guide-data-store.md",
+          "score": 0.395416594098023
+        }
+      ],
+      "trace": [
+        "Contraintes extraites. Domaine : fabric_general.",
+        "6 preuves uniques récupérées depuis Supabase.",
+        "Score max=0.456; couverture=1.00; document du domaine=True; preuve transactionnelle=False.",
+        "Preuves suffisantes.",
+        "Réponse produite à partir des preuves filtrées."
+      ]
+    }
+  ]
+}

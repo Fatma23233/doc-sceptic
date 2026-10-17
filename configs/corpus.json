@@ -1,0 +1,1 @@
+{"repository":"https://github.com/MicrosoftDocs/fabric-docs.git","branch":"main","include":["fundamentals/decision-guide-*.md","onelake/onelake-medallion-lakehouse-architecture.md","data-warehouse/**/*.md","data-engineering/lakehouse*.md","data-factory/**/*.md","fundamentals/direct-lake-*.md"],"exclude":["**/media/**","**/includes/**","**/index.yml"],"max_files":350}

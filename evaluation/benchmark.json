@@ -1,0 +1,365 @@
+{
+  "name": "Doc-Sceptic benchmark v1",
+  "description": "Jeu de tests fonctionnels pour action, choix, domaine et grounding des sources.",
+  "cases": [
+    {
+      "id": "wh_01",
+      "category": "warehouse_lakehouse",
+      "question": "Notre équipe travaille en T-SQL avec des données structurées, des transactions multi-tables et Power BI. Faut-il utiliser un Warehouse ou un Lakehouse ?",
+      "expected_action": "recommend",
+      "expected_choice": "warehouse",
+      "expected_domain": "warehouse_lakehouse",
+      "expected_source_terms": [
+        "warehouse",
+        "decision-guide"
+      ],
+      "required_answer_terms": [
+        "warehouse"
+      ]
+    },
+    {
+      "id": "wh_02",
+      "category": "warehouse_lakehouse",
+      "question": "J'ai besoin de modifier plusieurs tables dans une même transaction ACID. Quelle solution Microsoft Fabric correspond le mieux à ce besoin ?",
+      "expected_action": "recommend",
+      "expected_choice": "warehouse",
+      "expected_domain": "warehouse_lakehouse",
+      "expected_source_terms": [
+        "warehouse",
+        "decision-guide"
+      ],
+      "required_answer_terms": [
+        "warehouse",
+        "transaction"
+      ]
+    },
+    {
+      "id": "wh_03",
+      "category": "warehouse_lakehouse",
+      "question": "Notre équipe développe surtout en T-SQL et n'analyse que des données structurées. Quel stockage Fabric faut-il privilégier ?",
+      "expected_action": "recommend",
+      "expected_choice": "warehouse",
+      "expected_domain": "warehouse_lakehouse",
+      "expected_source_terms": [
+        "warehouse",
+        "decision-guide"
+      ],
+      "required_answer_terms": [
+        "warehouse"
+      ]
+    },
+    {
+      "id": "lh_01",
+      "category": "warehouse_lakehouse",
+      "question": "Nous traitons des données structurées et non structurées avec PySpark et Spark. Warehouse ou Lakehouse ?",
+      "expected_action": "recommend",
+      "expected_choice": "lakehouse",
+      "expected_domain": "warehouse_lakehouse",
+      "expected_source_terms": [
+        "lakehouse"
+      ],
+      "required_answer_terms": [
+        "lakehouse",
+        "spark"
+      ]
+    },
+    {
+      "id": "lh_02",
+      "category": "data_engineering",
+      "question": "Nos data engineers utilisent PySpark et des notebooks pour transformer des fichiers JSON et Parquet dans OneLake. Quelle architecture de stockage Fabric est la plus adaptée ?",
+      "expected_action": "recommend",
+      "expected_choice": "lakehouse",
+      "expected_domain": "data_engineering",
+      "expected_source_terms": [
+        "data-engineering",
+        "lakehouse",
+        "spark"
+      ],
+      "required_answer_terms": [
+        "lakehouse"
+      ]
+    },
+    {
+      "id": "hybrid_01",
+      "category": "warehouse_lakehouse",
+      "question": "Les data engineers transforment les données avec Spark, tandis que les analystes travaillent principalement en T-SQL et Power BI. Peut-on combiner Lakehouse et Warehouse ?",
+      "expected_action": "recommend",
+      "expected_choice": "hybrid",
+      "expected_domain": "warehouse_lakehouse",
+      "expected_source_terms": [
+        "lakehouse",
+        "warehouse",
+        "power"
+      ],
+      "required_answer_terms": [
+        "lakehouse",
+        "warehouse"
+      ]
+    },
+    {
+      "id": "de_01",
+      "category": "data_engineering",
+      "question": "Nous voulons utiliser des notebooks Python et Spark pour ingérer, préparer et transformer de gros volumes de données dans Microsoft Fabric. Quel composant faut-il privilégier ?",
+      "expected_action": "recommend",
+      "expected_choice": "any_grounded",
+      "expected_domain": "data_engineering",
+      "expected_source_terms": [
+        "data-engineering",
+        "lakehouse",
+        "spark"
+      ],
+      "required_answer_terms": [
+        "lakehouse",
+        "spark"
+      ]
+    },
+    {
+      "id": "de_02",
+      "category": "data_engineering",
+      "question": "Je dois traiter des données non structurées avec PySpark puis les rendre accessibles pour l'analyse. Quelle approche Fabric recommandes-tu ?",
+      "expected_action": "recommend",
+      "expected_choice": "lakehouse",
+      "expected_domain": "data_engineering",
+      "expected_source_terms": [
+        "lakehouse",
+        "data-engineering"
+      ],
+      "required_answer_terms": [
+        "lakehouse"
+      ]
+    },
+    {
+      "id": "df_01",
+      "category": "data_factory",
+      "question": "Nous utilisons Azure Data Factory. Quels éléments dois-je examiner avant d'envisager Fabric Data Factory ?",
+      "expected_action": "recommend",
+      "expected_choice": "any_grounded",
+      "expected_domain": "data_factory",
+      "expected_source_terms": [
+        "data-factory"
+      ],
+      "required_answer_terms": [
+        "data factory"
+      ]
+    },
+    {
+      "id": "df_02",
+      "category": "data_factory",
+      "question": "Nous avons des pipelines Azure Data Factory contenant des Mapping Data Flows. Que faut-il vérifier avant un upgrade vers Fabric Data Factory ?",
+      "expected_action": "recommend",
+      "expected_choice": "any_grounded",
+      "expected_domain": "data_factory",
+      "expected_source_terms": [
+        "data-factory",
+        "upgrade"
+      ],
+      "required_answer_terms": [
+        "fabric"
+      ]
+    },
+    {
+      "id": "df_03",
+      "category": "data_factory",
+      "question": "Quelles différences dois-je examiner entre les pipelines Azure Data Factory et les pipelines Fabric Data Factory ?",
+      "expected_action": "recommend",
+      "expected_choice": "any_grounded",
+      "expected_domain": "data_factory",
+      "expected_source_terms": [
+        "compare-fabric-data-factory",
+        "data-factory"
+      ],
+      "required_answer_terms": [
+        "pipeline",
+        "fabric"
+      ]
+    },
+    {
+      "id": "df_04",
+      "category": "data_factory",
+      "question": "Dans une migration Azure Data Factory vers Fabric, je veux vérifier les connecteurs, l'authentification et les contraintes réseau. Que dois-je examiner ?",
+      "expected_action": "recommend",
+      "expected_choice": "any_grounded",
+      "expected_domain": "data_factory",
+      "expected_source_terms": [
+        "data-factory"
+      ],
+      "required_answer_terms": [
+        "connect",
+        "authent",
+        "réseau"
+      ]
+    },
+    {
+      "id": "pbi_01",
+      "category": "power_bi",
+      "question": "Nous avons des données dans Fabric et Power BI est notre principal outil de consommation. Quelles options Fabric dois-je examiner pour servir les données aux analystes ?",
+      "expected_action": "recommend",
+      "expected_choice": "any_grounded",
+      "expected_domain": "power_bi",
+      "expected_source_terms": [
+        "power",
+        "direct"
+      ],
+      "required_answer_terms": [
+        "power bi"
+      ]
+    },
+    {
+      "id": "pbi_02",
+      "category": "power_bi",
+      "question": "Nos tables Delta dans un Lakehouse doivent être consommées avec Power BI. Que dit la documentation Fabric sur cet usage ?",
+      "expected_action": "recommend",
+      "expected_choice": "any_grounded",
+      "expected_domain": "power_bi",
+      "expected_source_terms": [
+        "lakehouse",
+        "power",
+        "direct"
+      ],
+      "required_answer_terms": [
+        "power bi"
+      ]
+    },
+    {
+      "id": "med_01",
+      "category": "medallion",
+      "question": "Je veux organiser mes données en Bronze, Silver et Gold dans Microsoft Fabric. Quelle architecture proposes-tu ?",
+      "expected_action": "recommend",
+      "expected_choice": "any_grounded",
+      "expected_domain": "medallion",
+      "expected_source_terms": [
+        "medallion",
+        "lakehouse",
+        "bronze",
+        "silver",
+        "gold"
+      ],
+      "required_answer_terms": [
+        "bronze",
+        "silver",
+        "gold"
+      ]
+    },
+    {
+      "id": "med_02",
+      "category": "medallion",
+      "question": "Nous utilisons Spark pour nettoyer les données brutes avant de produire une couche Gold destinée à l'analyse. Comment structurer cela dans Fabric ?",
+      "expected_action": "recommend",
+      "expected_choice": "any_grounded",
+      "expected_domain": "medallion",
+      "expected_source_terms": [
+        "medallion",
+        "lakehouse",
+        "data-engineering"
+      ],
+      "required_answer_terms": [
+        "gold"
+      ]
+    },
+    {
+      "id": "clarify_01",
+      "category": "clarify",
+      "question": "Je démarre un projet Microsoft Fabric. Warehouse ou Lakehouse ?",
+      "expected_action": "clarify",
+      "expected_choice": "none",
+      "expected_domain": "warehouse_lakehouse",
+      "expected_source_terms": [],
+      "required_answer_terms": [
+        "précise"
+      ]
+    },
+    {
+      "id": "clarify_02",
+      "category": "clarify",
+      "question": "Quelle architecture Fabric dois-je choisir ?",
+      "expected_action": "clarify",
+      "expected_choice": "none",
+      "expected_domain": "fabric_general",
+      "expected_source_terms": [],
+      "required_answer_terms": [
+        "précise"
+      ]
+    },
+    {
+      "id": "abstain_01",
+      "category": "abstain",
+      "question": "Quel choix entre Warehouse et Lakehouse me coûtera exactement 1 247 euros par mois ?",
+      "expected_action": "abstain",
+      "expected_choice": "none",
+      "expected_domain": "warehouse_lakehouse",
+      "expected_source_terms": [],
+      "required_answer_terms": []
+    },
+    {
+      "id": "abstain_02",
+      "category": "abstain",
+      "question": "Garantis-moi que mon architecture Microsoft Fabric n'aura jamais de panne pendant les cinq prochaines années.",
+      "expected_action": "abstain",
+      "expected_choice": "none",
+      "expected_domain": "fabric_general",
+      "expected_source_terms": [],
+      "required_answer_terms": []
+    },
+    {
+      "id": "abstain_03",
+      "category": "abstain",
+      "question": "Donne-moi la latence exacte en millisecondes de mon futur Warehouse sans information sur la volumétrie, la capacité ou les requêtes.",
+      "expected_action": "abstain",
+      "expected_choice": "none",
+      "expected_domain": "warehouse_lakehouse",
+      "expected_source_terms": [],
+      "required_answer_terms": []
+    },
+    {
+      "id": "chat_01",
+      "category": "chat",
+      "question": "Bonjour",
+      "expected_action": "chat",
+      "expected_choice": "none",
+      "expected_domain": "chat",
+      "expected_source_terms": [],
+      "required_answer_terms": [
+        "doc-sceptic"
+      ]
+    },
+    {
+      "id": "chat_02",
+      "category": "chat",
+      "question": "Qui es-tu ?",
+      "expected_action": "chat",
+      "expected_choice": "none",
+      "expected_domain": "chat",
+      "expected_source_terms": [],
+      "required_answer_terms": [
+        "doc-sceptic"
+      ]
+    },
+    {
+      "id": "chat_03",
+      "category": "chat",
+      "question": "Que peux-tu faire ?",
+      "expected_action": "chat",
+      "expected_choice": "none",
+      "expected_domain": "chat",
+      "expected_source_terms": [],
+      "required_answer_terms": [
+        "data factory"
+      ]
+    },
+    {
+      "id": "store_01",
+      "category": "data_store",
+      "question": "Je dois choisir un stockage Fabric pour un workload transactionnel opérationnel OLTP et une base relationnelle normalisée. Quel datastore correspond à ce scénario ?",
+      "expected_action": "recommend",
+      "expected_choice": "sql_database",
+      "expected_domain": "fabric_general",
+      "expected_source_terms": [
+        "decision-guide-data-store",
+        "database"
+      ],
+      "required_answer_terms": [
+        "sql database"
+      ]
+    }
+  ]
+}
