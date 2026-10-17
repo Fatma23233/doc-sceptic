@@ -2,6 +2,9 @@
 
 ### Evidence-grounded Microsoft Fabric Architecture Advisor
 
+<img width="1536" height="1024" alt="Designer (4)" src="https://github.com/user-attachments/assets/aa0a5403-8744-4761-914c-69d32d18f834" />
+
+
 Doc-Sceptic est un assistant RAG orienté Microsoft Fabric qui aide à choisir une architecture à partir de documentation technique indexée.
 
 L'objectif n'est pas simplement de générer une réponse plausible.
@@ -87,6 +90,8 @@ Exemples :
 ---
 
 ## 🏗️ Architecture
+
+
 
 ```mermaid
 flowchart TD
